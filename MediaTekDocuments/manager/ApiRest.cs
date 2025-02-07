@@ -14,7 +14,7 @@ namespace MediaTekDocuments.manager
         /// </summary>
         private static ApiRest instance = null;
         /// <summary>
-        /// Objet de connexion à l'api
+        /// Objet de connexion à l'api 
         /// </summary>
         private readonly HttpClient httpClient;
         /// <summary>
