@@ -7,6 +7,8 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using System.Configuration;
 using System.Linq;
+using System.Xml.Linq;
+using System.Globalization;
 
 namespace MediaTekDocuments.dal
 {
@@ -36,9 +38,13 @@ namespace MediaTekDocuments.dal
         /// </summary>
         private const string POST = "POST";
         /// <summary>
-        /// méthode HTTP pour update
-
+        /// méthode HTTP pour delete
+        /// </summary>
+        private const string DELETE = "DELETE"; 
         /// <summary>
+        /// méthode HTTP pour update
+        /// </summary>
+        private const string PUT = "PUT";   
         /// Méthode privée pour créer un singleton
         /// initialise l'accès à l'API
         /// </summary>
@@ -56,7 +62,6 @@ namespace MediaTekDocuments.dal
                 Environment.Exit(0);
             }
         }
-
         /// <summary>
         /// Création et retour de l'instance unique de la classe
         /// </summary>
@@ -69,7 +74,6 @@ namespace MediaTekDocuments.dal
             }
             return instance;
         }
-
         /// <summary>
         /// Retourne tous les genres à partir de la BDD
         /// </summary>
@@ -79,7 +83,6 @@ namespace MediaTekDocuments.dal
             IEnumerable<Genre> lesGenres = TraitementRecup<Genre>(GET, "genre", null);
             return new List<Categorie>(lesGenres);
         }
-
         /// <summary>
         /// Retourne tous les rayons à partir de la BDD
         /// </summary>
@@ -89,7 +92,6 @@ namespace MediaTekDocuments.dal
             IEnumerable<Rayon> lesRayons = TraitementRecup<Rayon>(GET, "rayon", null);
             return new List<Categorie>(lesRayons);
         }
-
         /// <summary>
         /// Retourne toutes les catégories de public à partir de la BDD
         /// </summary>
@@ -99,7 +101,6 @@ namespace MediaTekDocuments.dal
             IEnumerable<Public> lesPublics = TraitementRecup<Public>(GET, "public", null);
             return new List<Categorie>(lesPublics);
         }
-
         /// <summary>
         /// Retourne toutes les livres à partir de la BDD
         /// </summary>
@@ -109,7 +110,6 @@ namespace MediaTekDocuments.dal
             List<Livre> lesLivres = TraitementRecup<Livre>(GET, "livre", null);
             return lesLivres;
         }
-
         /// <summary>
         /// Retourne toutes les dvd à partir de la BDD
         /// </summary>
@@ -119,7 +119,6 @@ namespace MediaTekDocuments.dal
             List<Dvd> lesDvd = TraitementRecup<Dvd>(GET, "dvd", null);
             return lesDvd;
         }
-
         /// <summary>
         /// Retourne toutes les revues à partir de la BDD
         /// </summary>
@@ -129,8 +128,6 @@ namespace MediaTekDocuments.dal
             List<Revue> lesRevues = TraitementRecup<Revue>(GET, "revue", null);
             return lesRevues;
         }
-
-
         /// <summary>
         /// Retourne les exemplaires d'une revue
         /// </summary>
@@ -142,7 +139,79 @@ namespace MediaTekDocuments.dal
             List<Exemplaire> lesExemplaires = TraitementRecup<Exemplaire>(GET, "exemplaire/" + jsonIdDocument, null);
             return lesExemplaires;
         }
-
+        /// <summary>
+        /// Retourne les commandes d'un livre
+        /// </summary>
+        /// <param name="idLivre">id du livre concerné</param>
+        /// <returns>Liste d'objets CommandeDocument</returns>
+        public List<CommandeDocument> getCommandesLivre(string idLivre)
+        {
+            String jsonIdLivre = convertToJson("idLivreDvd", idLivre);
+            List<CommandeDocument> lesCommandes = TraitementRecup<CommandeDocument>(GET, "commandes/" + jsonIdLivre, null);
+            return lesCommandes;
+        }
+        public List<Suivi> getSuivis()
+        {
+            List<Suivi> lesSuivis = TraitementRecup<Suivi>(GET, "suivi", null);
+            return lesSuivis;
+        }
+        /// <summary>
+        /// Supprime une commande de la table commandedocument
+        /// </summary>
+        /// <param name="idCommande">numéro de commande</param>
+        /// <returns></returns>
+        public bool supprimerCommande(string idCommande)
+        {
+            Object jsonId = convertToJson("id", idCommande);    
+            try {
+                Console.WriteLine(jsonId);
+                TraitementRecup<CommandeDocument>(DELETE, "commandedocument/" + jsonId, null);
+                return true;
+            } catch (Exception ex) {
+                Console.WriteLine(ex);
+                return false;
+            }
+        }
+        /// <summary>
+        /// Modifie l'état de suivi d'une commande avec l'état selectionné
+        /// </summary>
+        /// <param name="idCommande"></param>
+        /// <param name="idSuivi"></param>
+        /// <returns></returns>
+        public bool modifierSuiviCommande(string idCommande, int idSuivi) 
+        {
+            string jsonIdSuivi = convertToJson("idSuivi", idSuivi);
+            Console.WriteLine(jsonIdSuivi);
+            try { 
+                TraitementRecup<CommandeDocument>(PUT, "commandedocument/" + idCommande, "champs=" + jsonIdSuivi);
+                return true;
+            } catch (Exception ex) {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Enregistre une nouvelle commande de livre dans la base de données
+        /// </summary>
+        /// <param name="montant"></param>
+        /// <param name="idLivre"></param>
+        /// <param name="nbExemplaire"></param>
+        /// <returns>true si l'insertion s'est bien passée, false sinon</returns>
+        public bool enregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
+        {
+            Dictionary<Object, Object> parametres = new Dictionary<Object, Object>();
+            parametres.Add("dateCommande", DateTime.Now.ToString("yyyy-MM-dd"));
+            parametres.Add("montant", montant);
+            parametres.Add("idSuivi", 1);
+            parametres.Add("idLivreDvd", idLivre);
+            parametres.Add("nbExemplaire", nbExemplaire);
+            string jsonArray = convertToJsonArray(parametres);
+            try {
+                TraitementRecup<Commande>(POST, "insert_commande", "champs=" + jsonArray);
+                return true;
+            } catch { 
+                return false; 
+            }
+        }
         /// <summary>
         /// ecriture d'un exemplaire en base de données
         /// </summary>
@@ -162,7 +231,6 @@ namespace MediaTekDocuments.dal
             }
             return false;
         }
-
         /// <summary>
         /// Traitement de la récupération du retour de l'api, avec conversion du json en liste pour les select (GET)
         /// </summary>
@@ -201,7 +269,6 @@ namespace MediaTekDocuments.dal
             }
             return liste;
         }
-
         /// <summary>
         /// Convertit en json un couple nom/valeur
         /// </summary>
@@ -214,7 +281,20 @@ namespace MediaTekDocuments.dal
             dictionary.Add(nom, valeur);
             return JsonConvert.SerializeObject(dictionary);
         }
-
+        /// <summary>
+        /// Convertit une liste(dictionnaire) de couple nom/valeur au format JSON
+        /// </summary>
+        /// <param name="nomsValeurs"></param>
+        /// <returns></returns>
+        private String convertToJsonArray(Dictionary<Object, Object> nomsValeurs)
+        {
+            Dictionary<Object, Object> dictionary = new Dictionary<Object, Object>();
+            foreach (var ligne in nomsValeurs)
+            {
+                dictionary.Add(ligne.Key, ligne.Value);
+            }
+            return JsonConvert.SerializeObject(dictionary);
+        }
         /// <summary>
         /// Modification du convertisseur Json pour gérer le format de date
         /// </summary>
@@ -225,7 +305,6 @@ namespace MediaTekDocuments.dal
                 base.DateTimeFormat = "yyyy-MM-dd";
             }
         }
-
         /// <summary>
         /// Modification du convertisseur Json pour prendre en compte les booléens
         /// classe trouvée sur le site :
@@ -237,12 +316,10 @@ namespace MediaTekDocuments.dal
             {
                 return Convert.ToBoolean(reader.ValueType == typeof(string) ? Convert.ToByte(reader.Value) : reader.Value);
             }
-
             public override void WriteJson(JsonWriter writer, bool value, JsonSerializer serializer)
             {
                 serializer.Serialize(writer, value);
             }
         }
-
     }
 }

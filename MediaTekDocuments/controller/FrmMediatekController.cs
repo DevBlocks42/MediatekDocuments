@@ -86,7 +86,42 @@ namespace MediaTekDocuments.controller
         {
             return access.GetExemplairesRevue(idDocuement);
         }
-
+        /// <summary>
+        /// Récupère les commandes associées à un livre
+        /// </summary>
+        /// <param name="idLivre"></param>
+        /// <returns>List<CommandeDocument></returns>
+        public List<CommandeDocument> getCommandesLivre(string idLivre)
+        {
+            return access.getCommandesLivre(idLivre);
+        }
+        /// <summary>
+        /// Enregistre une nouvelle commande de livre dans la base de données
+        /// </summary>
+        /// <param name="montant"></param>
+        /// <param name="idLivre"></param>
+        /// <param name="nbExemplaire"></param>
+        /// <returns>bool</returns>
+        public bool supprimerCommande(string idCommande)
+        {
+            return access.supprimerCommande(idCommande);
+        }
+        public bool enregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
+        {
+            return access.enregistrerNouvelleCommande(montant, idLivre, nbExemplaire);
+        }
+        public bool modifierSuiviCommande(string idCommande, int idSuivi)
+        {
+            return access.modifierSuiviCommande(idCommande, idSuivi);
+        }
+        /// <summary>
+        /// Retourne la liste de tous les suivis possibles
+        /// </summary>
+        /// <returns>Liste d'objets Suivi</returns>
+        public List<Suivi> getSuivis()
+        {
+            return access.getSuivis();
+        }
         /// <summary>
         /// Crée un exemplaire d'une revue dans la bdd
         /// </summary>

@@ -75,6 +75,7 @@ namespace MediaTekDocuments.manager
                     httpResponse = httpClient.GetAsync(message).Result;
                     break;
                 case "POST":
+                    Console.WriteLine(parametres);
                     httpResponse = httpClient.PostAsync(message, content).Result;
                     break;
                 case "PUT":
