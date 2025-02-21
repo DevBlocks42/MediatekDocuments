@@ -150,6 +150,16 @@ namespace MediaTekDocuments.dal
             List<CommandeDocument> lesCommandes = TraitementRecup<CommandeDocument>(GET, "commandes/" + jsonIdLivre, null);
             return lesCommandes;
         }
+        public List<Abonnement> getAbonnementsRevue(string idRevue)
+        {
+            String jsonIdRevue = convertToJson("idRevue", idRevue);
+            try { 
+                List<Abonnement> lesAbonnements = TraitementRecup<Abonnement>(GET, "abonnements/" + jsonIdRevue, null);
+                return lesAbonnements;
+            } catch(Exception e) {
+                return null;
+            }
+        }
         public List<Suivi> getSuivis()
         {
             List<Suivi> lesSuivis = TraitementRecup<Suivi>(GET, "suivi", null);
@@ -171,6 +181,35 @@ namespace MediaTekDocuments.dal
                 Console.WriteLine(ex);
                 return false;
             }
+        }
+        /// <summary>
+        /// Supprime un abonnement
+        /// </summary>
+        /// <param name="idAbonnement"></param>
+        /// <returns></returns>
+        public bool supprimerAbonnement(string idAbonnement)
+        {
+            Object jsonId = convertToJson("id", idAbonnement);
+            try { 
+                TraitementRecup<CommandeDocument>(DELETE, "abonnement/" + jsonId, null);
+                return true;
+            } catch(Exception ex) {
+                return false;
+            }
+        }
+        public List<Abonnement> getAbonnementsExpirationProche()
+        {
+            List<Abonnement> abos = new List<Abonnement> ();    
+            DateTime maxDate = DateTime.Today;
+            maxDate = maxDate.AddDays(30);
+            string jsonMaxDate = convertToJson("maxDate", maxDate.ToString("yyyy-MM-dd"));
+            Console.WriteLine(jsonMaxDate); 
+            try { 
+                abos = TraitementRecup<Abonnement>(GET, "abonnements_30jours/" +jsonMaxDate, null);
+            } catch(Exception ex) {
+                Console.WriteLine(ex); 
+            }
+            return abos;
         }
         /// <summary>
         /// Modifie l'état de suivi d'une commande avec l'état selectionné
@@ -210,6 +249,22 @@ namespace MediaTekDocuments.dal
                 return true;
             } catch { 
                 return false; 
+            }
+        }
+        public bool enregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
+        {
+            Dictionary<Object, Object> parametres = new Dictionary<Object, Object>();
+            parametres.Add("dateCommande", DateTime.Now.ToString("yyyy-MM-dd"));
+            parametres.Add("montant", montant);
+            parametres.Add("dateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd"));
+            parametres.Add("idRevue", idRevue);
+            string jsonArray = convertToJsonArray(parametres);
+            try {
+                TraitementRecup<Abonnement>(POST, "insert_abonnement", "champs=" + jsonArray);
+                return true;
+            } catch (Exception ex) { 
+                Console.WriteLine(ex.ToString());
+                return false;
             }
         }
         /// <summary>

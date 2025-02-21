@@ -22,6 +22,7 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgGenres = new BindingSource();
         private readonly BindingSource bdgPublics = new BindingSource();
         private readonly BindingSource bdgRayons = new BindingSource();
+        private List<Abonnement> abonnementsExpirationProche;
 
         /// <summary>
         /// Constructeur : création du contrôleur lié à ce formulaire
@@ -32,6 +33,7 @@ namespace MediaTekDocuments.view
             this.controller = new FrmMediatekController();
             tabCommandeLivre.Enter += tabCommandeLivre_Enter;
             tabCommandeDvd.Enter += tabCommandeDvd_Enter;
+            tabAbonnementRevue.Enter += tabAbonnementRevue_Enter;
         }
 
         /// <summary>
@@ -47,6 +49,44 @@ namespace MediaTekDocuments.view
             if (cbx.Items.Count > 0)
             {
                 cbx.SelectedIndex = -1;
+            }
+        }
+        private void VerifierAbonnementsBientotExpires()
+        {
+            abonnementsExpirationProche = controller.getAbonnementsExpirationProche();
+            lesRevues = controller.GetAllRevues();
+            if (abonnementsExpirationProche.Count > 0) {
+                using (Form form = new Form())
+                {
+                    form.SetBounds(0, 0, 512, 256);
+                    DataGridView dgvAboExpires = new DataGridView();
+                    form.Text = "Abonnements expirant dans moins de 30 jours.";
+                    dgvAboExpires.Width = 512;
+                    dgvAboExpires.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;       
+                    dgvAboExpires.DataSource = abonnementsExpirationProche;
+                    dgvAboExpires.Columns.Add("titreRevue", "Titre");
+                    dgvAboExpires.DataBindingComplete += dgvAboExpires_DataBindingComplete;
+                    form.Controls.Add(dgvAboExpires);
+                    form.ShowDialog(this);
+                }
+            }
+        }
+        private void FrmMediatek_Shown(object sender, EventArgs e)
+        {
+            VerifierAbonnementsBientotExpires();
+        }
+        private void dgvAboExpires_DataBindingComplete(object sender, EventArgs e)
+        {
+            DataGridView _sender = sender as DataGridView;
+            _sender.Columns["id"].Visible = false;
+            _sender.Columns["dateCommande"].Visible = false;
+            _sender.Columns["montant"].Visible = false;
+            _sender.Columns["idRevue"].Visible = false;
+            _sender.Columns["dateFinAbonnement"].HeaderText = "Date d'expiration";
+            _sender.Refresh();
+            for (int i = 0; i < _sender.RowCount; i++)
+            {
+                _sender.Rows[i].Cells["titreRevue"].Value = lesRevues.Find(x => x.Id.Equals(abonnementsExpirationProche[i].idRevue)).Titre;
             }
         }
         #endregion
@@ -1258,7 +1298,6 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void tabCommandeLivre_Enter(object sender, EventArgs e)
         {
-            Console.WriteLine("TAB COMMANDE LIVRE ENTER");
             lesSuivis = controller.getSuivis();
             lesSuivis = lesSuivis.OrderBy(suivi => suivi.id).ToList();
             bdgSuivis.DataSource = lesSuivis;
@@ -1274,7 +1313,6 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void tabCommandeDvd_Enter(object sender, EventArgs e)
         {
-            Console.WriteLine("TAB COMMANDE DVD ENTER");
             lesDvd = controller.GetAllDvd();
             lesSuivis = controller.getSuivis();
             lesSuivis = lesSuivis.OrderBy(suivi => suivi.id).ToList();
@@ -1428,6 +1466,11 @@ namespace MediaTekDocuments.view
                 MessageBox.Show("Les informations de commande saisies sont incorrectes, veuillez vérifier la saisie.", "Erreur de saisie");
             }
         }
+        /// <summary>
+        /// Méthode événementielle de réponse aux clics sur les colonnes de la DataGridView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgvCommandes_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridView _sender = sender as DataGridView;
@@ -1458,6 +1501,11 @@ namespace MediaTekDocuments.view
                 AfficherInfosCommandes(livreCourant);
             }
         }
+        /// <summary>
+        /// Méthode événementielle de réponse à la séléction sur la DataGrid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgvCommandes_SelectionChanged(object sender, EventArgs e)
         {
             DataGridView dgvCourante = sender as DataGridView;
@@ -1572,6 +1620,187 @@ namespace MediaTekDocuments.view
             LivreDvd leLivre = livreCourant;
             livreCourant = null;
             AfficherInfosCommandes(leLivre);
+        }
+        #endregion
+
+        #region Onglet abonnements
+
+        private Revue revueCourante = null;
+        private readonly BindingSource bdgAbonnement = new BindingSource();
+        private List<Abonnement> lesAbonnements = null;
+        /// <summary>
+        /// Méthode événementielle associée à l'entrée dans l'onglet d'abonnement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabAbonnementRevue_Enter(object sender, EventArgs e) 
+        { 
+            lesRevues = controller.GetAllRevues();
+        }
+        /// <summary>
+        /// Méthode événementielle associée au clic sur le bouton de recherche de revue.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnRechercheRevue_Click(object sender, EventArgs e)
+        {
+            revueCourante = null;
+            tbxNumRevueSuppr.Text = string.Empty;
+            if(tbxRechercheRevue.Text.Length == 5) {
+                revueCourante = lesRevues.Find(x => x.Id.Equals(tbxRechercheRevue.Text));
+                if(revueCourante != null) {
+                    afficherInfosRevues();
+                    afficherInfosCommandesRevue();
+                } else {
+                    MessageBox.Show("Le numéro de revue saisit n'a pas été trouvé dans la base de données.", "Erreur de saisie");
+                }
+            } else {
+                MessageBox.Show("Erreur, l'identifiant saisit ne respecte pas le format (5 chiffres obligatoires).");
+            }
+        }
+        /// <summary>
+        /// Méthode événementielle associée au clic sur le bouton d'enregistrement d'abonnement.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEnregistrerAbonnement_Click(object sender, EventArgs e)
+        {
+            if(revueCourante != null) { 
+                if(tbxMontantAbonnement.Text.Length > 0 && dtpDateFinAbonnement.Checked) {
+                    if(dtpDateFinAbonnement.Value > DateTime.Now) { 
+                        double montant = double.Parse(tbxMontantAbonnement.Text, NumberStyles.Any, new CultureInfo("en-US"));
+                        string idRevue = revueCourante.Id;
+                        DateTime dateFinAbonnement = dtpDateFinAbonnement.Value;
+                        if (controller.enregistrerAbonnement(montant, idRevue, dateFinAbonnement)) {
+                            MessageBox.Show("L'abonnement a bien été enregistré.");
+                            btnRechercheRevue.PerformClick();
+                        } else {
+                            MessageBox.Show("Une erreur interne est survenue lors de l'enregistrement de l'abonnement.", "Erreur interne");
+                        }
+                    } else {
+                        MessageBox.Show("Erreur, la date choisie doit être postérieure à la date actuelle.", "Erreur de saisie");
+                    }
+                } else {
+                    MessageBox.Show("Erreur de saisie, vous devez saisir tous les champs du formulaire d'abonnement.");
+                }
+            } else {
+                MessageBox.Show("Erreur, vous devez d'abord rechercher une revue avant de pouvoir enregistrer un abonnement.");
+            }
+        }
+        /// <summary>
+        /// Méthode événementielle de gestion du click sur le bouton de suppression d'abonnement
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSupprAbonnement_Click(object sender, EventArgs e)
+        {
+            if (dgvCommandesRevues.CurrentCell != null) {
+                int index = dgvCommandesRevues.CurrentCell.RowIndex;
+                Abonnement abonnementCourant = lesAbonnements[index];
+                List<Exemplaire> exemplairesRevue = controller.GetExemplairesRevue(abonnementCourant.idRevue);
+                bool supprAutorise = true;
+                if (exemplairesRevue != null) {
+                    foreach (Exemplaire exemplaire in exemplairesRevue) {
+                        if (ParutionDansAbonnement(abonnementCourant.dateCommande, abonnementCourant.dateFinAbonnement, exemplaire.DateAchat)) {
+                            supprAutorise = false;
+                            break;
+                        }
+                    }
+                    if(supprAutorise) {
+                        if (controller.supprimerAbonnement(abonnementCourant.id)) {
+                            MessageBox.Show("L'abonnement a bien été supprimé.");
+                            btnRechercheRevue.PerformClick();   
+                        } else {
+                            MessageBox.Show("Erreur interne lors de la suppression de l'abonnement.", "Erreur interne");
+                        }
+                    } else {
+                        MessageBox.Show("Erreur, l'abonnement n'a pas pu être supprimé car un ou plusieurs exemplaires lui sont rattaché(s).", "Erreur de gestion");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Méthode événementielle de gestion du clic sur les colonnes de la DataGridView (tri)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandesRevues_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if(revueCourante != null && lesAbonnements != null && lesAbonnements.Count > 0 ) {
+                string titreColonne = dgvCommandesRevues.Columns[e.ColumnIndex].HeaderText;
+                switch(titreColonne) {
+                    case "dateFinAbonnement":
+                        lesAbonnements = lesAbonnements.OrderBy(o => o.dateFinAbonnement).Reverse().ToList();
+                        break;
+                    case "dateCommande":
+                        lesAbonnements = lesAbonnements.OrderBy(o => o.dateCommande).Reverse().ToList();
+                        break;
+                    case "montant":
+                        lesAbonnements = lesAbonnements.OrderBy(o => o.montant).Reverse().ToList();
+                        break;
+                    default: break;
+                }
+                afficherInfosCommandesRevue(true);
+            }
+        }
+        /// <summary>
+        /// Méthode événementielle associée à la séléction de la DataGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dgvCommandesRevues_SelectionChanged(object sender, EventArgs e)
+        {
+            if(dgvCommandesRevues.Focused) {
+                if (dgvCommandesRevues.CurrentCell != null)
+                {
+                    int index = dgvCommandesRevues.CurrentCell.RowIndex;
+                    if(index != -1) {
+                        tbxNumRevueSuppr.Text = lesAbonnements[index].id;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Affiche les informations de la revue courante
+        /// </summary>
+        private void afficherInfosRevues()
+        {
+            tbxInfoNumRevue.Text = revueCourante.Id;
+            tbxInfoTitreRevue.Text = revueCourante.Titre;
+            tbxInfoRayonRevue.Text = revueCourante.Rayon;
+            tbxInfoGenreRevue.Text = revueCourante.Genre;
+            tbxInfoPublicRevue.Text = revueCourante.Public;
+            tbxInfoPeriodiciteRevue.Text = revueCourante.Periodicite;
+            tbxInfoMiseADispo.Text = revueCourante.DelaiMiseADispo.ToString();
+        }
+        /// <summary>
+        /// Affiche les abonnements de la revue courante
+        /// </summary>
+        /// <param name="sorted">True : ré-affiche la liste des abonnements triée; False : réaffiche la liste des abonnements récupérées depuis la base de données</param>
+        private void afficherInfosCommandesRevue(bool sorted=false)
+        {
+            if(revueCourante != null) {
+                dgvCommandesRevues.Columns.Clear();
+                dgvCommandesRevues.Rows.Clear();
+                if(!sorted) { 
+                    lesAbonnements = controller.getAbonnementsRevue(revueCourante.Id);
+                }
+                bdgAbonnement.DataSource = lesAbonnements;
+                dgvCommandesRevues.DataSource = bdgAbonnement;
+                dgvCommandesRevues.Columns["idRevue"].Visible = false;
+                dgvCommandesRevues.Columns["id"].Visible = false;
+            }
+        }
+        /// <summary>
+        /// Méthode permettant de savoir si la date d'un exemplaire est entre la date de commande et la date de fin d'abonnement
+        /// </summary>
+        /// <param name="dateCommande"></param>
+        /// <param name="dateFinAbonnement"></param>
+        /// <param name="dateParution"></param>
+        /// <returns>True|False</returns>
+        private bool ParutionDansAbonnement(DateTime dateCommande, DateTime dateFinAbonnement, DateTime dateParution)
+        {
+            return dateParution >= dateCommande && dateParution <= dateFinAbonnement;    
         }
         #endregion
     }

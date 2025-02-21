@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MediaTekDocuments.model;
 using MediaTekDocuments.dal;
+using System;
 
 namespace MediaTekDocuments.controller
 {
@@ -95,6 +96,14 @@ namespace MediaTekDocuments.controller
         {
             return access.getCommandesLivre(idLivre);
         }
+        public List<Abonnement> getAbonnementsRevue(string idRevue)
+        {
+            return access.getAbonnementsRevue(idRevue);
+        }
+        public List<Abonnement> getAbonnementsExpirationProche()
+        {
+            return access.getAbonnementsExpirationProche();
+        }
         /// <summary>
         /// Enregistre une nouvelle commande de livre dans la base de données
         /// </summary>
@@ -106,6 +115,10 @@ namespace MediaTekDocuments.controller
         {
             return access.supprimerCommande(idCommande);
         }
+        public bool supprimerAbonnement(string idAbonnement)
+        {
+            return access.supprimerAbonnement(idAbonnement);
+        }
         public bool enregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
         {
             return access.enregistrerNouvelleCommande(montant, idLivre, nbExemplaire);
@@ -113,6 +126,10 @@ namespace MediaTekDocuments.controller
         public bool modifierSuiviCommande(string idCommande, int idSuivi)
         {
             return access.modifierSuiviCommande(idCommande, idSuivi);
+        }
+        public bool enregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
+        {
+            return access.enregistrerAbonnement(montant, idRevue, dateFinAbonnement);
         }
         /// <summary>
         /// Retourne la liste de tous les suivis possibles
