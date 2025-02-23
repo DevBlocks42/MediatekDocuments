@@ -23,19 +23,43 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgPublics = new BindingSource();
         private readonly BindingSource bdgRayons = new BindingSource();
         private List<Abonnement> abonnementsExpirationProche;
+        private Utilisateur utilisateur = null;
 
         /// <summary>
         /// Constructeur : création du contrôleur lié à ce formulaire
         /// </summary>
-        internal FrmMediatek()
+        internal FrmMediatek(Utilisateur utilisateur)
         {
             InitializeComponent();
+            this.utilisateur = utilisateur;
             this.controller = new FrmMediatekController();
+            disableControlsForUser();
             tabCommandeLivre.Enter += tabCommandeLivre_Enter;
             tabCommandeDvd.Enter += tabCommandeDvd_Enter;
             tabAbonnementRevue.Enter += tabAbonnementRevue_Enter;
+            
         }
-
+        public void disableControlsForUser()
+        {
+            switch(utilisateur.id_service) {
+                case 1: //Service administratif
+                    break;
+                case 2: //Service prêts
+                    Console.WriteLine("Authentification service prêts");
+                    tabOngletsApplication.TabPages.Remove(tabReceptionRevue);
+                    tabOngletsApplication.TabPages.Remove(tabCommandeLivre);
+                    tabOngletsApplication.TabPages.Remove(tabCommandeDvd);
+                    tabOngletsApplication.TabPages.Remove(tabAbonnementRevue);
+                    break;
+                case 3: //Service culture
+                    MessageBox.Show("Le personnel du service culture n'est pas habilité à accéder à l'application.", "Privillèges insuffisants.");
+                    Application.Exit();
+                    break;
+                case 4: //Service administrateurs
+                    break;
+                default: break;
+            }
+        }
         /// <summary>
         /// Rempli un des 3 combo (genre, public, rayon)
         /// </summary>
@@ -59,6 +83,9 @@ namespace MediaTekDocuments.view
                 using (Form form = new Form())
                 {
                     form.SetBounds(0, 0, 512, 256);
+                    form.StartPosition = FormStartPosition.CenterParent;
+                    form.FormBorderStyle = FormBorderStyle.FixedSingle;
+                    form.MaximizeBox = false;
                     DataGridView dgvAboExpires = new DataGridView();
                     form.Text = "Abonnements expirant dans moins de 30 jours.";
                     dgvAboExpires.Width = 512;
@@ -73,7 +100,9 @@ namespace MediaTekDocuments.view
         }
         private void FrmMediatek_Shown(object sender, EventArgs e)
         {
-            VerifierAbonnementsBientotExpires();
+            if(utilisateur!= null &&  utilisateur.id_service == 1 || utilisateur.id_service == 4) { 
+                VerifierAbonnementsBientotExpires();
+            }
         }
         private void dgvAboExpires_DataBindingComplete(object sender, EventArgs e)
         {

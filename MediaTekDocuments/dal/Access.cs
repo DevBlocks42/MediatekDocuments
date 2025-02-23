@@ -275,16 +275,32 @@ namespace MediaTekDocuments.dal
         public bool CreerExemplaire(Exemplaire exemplaire)
         {
             String jsonExemplaire = JsonConvert.SerializeObject(exemplaire, new CustomDateTimeConverter());
-            try
-            {
+            try {
                 List<Exemplaire> liste = TraitementRecup<Exemplaire>(POST, "exemplaire", "champs=" + jsonExemplaire);
                 return (liste != null);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }
             return false;
+        }
+        public Utilisateur getUserInfos(string login)
+        {
+            if(login.Length <= 0 || login == null) {
+                return null;
+            }
+            List<Utilisateur> utilisateur = null;
+            try {
+                string jsonLogin = convertToJson("login", login);
+                utilisateur = TraitementRecup<Utilisateur>(GET, "utilisateur/" + jsonLogin, null);
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+            if(utilisateur.Count > 0) { 
+                return utilisateur[0];
+            } else {
+                return null;
+            }
         }
         /// <summary>
         /// Traitement de la récupération du retour de l'api, avec conversion du json en liste pour les select (GET)
