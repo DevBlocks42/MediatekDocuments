@@ -24,7 +24,7 @@ namespace MediaTekDocuments.view
         private void btnConnexion_Click(object sender, EventArgs e)
         {
             if(tbxLogin.Text.Length > 0 && tbxPwd.Text.Length > 0) {
-                Utilisateur utilisateur = controller.getUserPasswordHash(tbxLogin.Text);
+                Utilisateur utilisateur = controller.getUserInfos(tbxLogin.Text);
                 if(utilisateur != null) {
                     if(utilisateur.pwd_hash != "") { 
                         if(CryptoTools.VerifyPassword(tbxPwd.Text, utilisateur.pwd_hash)) {

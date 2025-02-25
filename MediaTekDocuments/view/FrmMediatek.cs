@@ -52,7 +52,7 @@ namespace MediaTekDocuments.view
                     tabOngletsApplication.TabPages.Remove(tabAbonnementRevue);
                     break;
                 case 3: //Service culture
-                    MessageBox.Show("Le personnel du service culture n'est pas habilité à accéder à l'application.", "Privillèges insuffisants.");
+                    MessageBox.Show("Le personnel du service culture n'est pas habilité à accéder à l'application.", "Privilèges insuffisants.");
                     Application.Exit();
                     break;
                 case 4: //Service administrateurs
