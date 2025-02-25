@@ -15,9 +15,9 @@ namespace MediaTekDocuments.controller
         {
             access = Access.GetInstance();  
         }
-        public Utilisateur getUserInfos(string login)
+        public Utilisateur GetUserInfos(string login)
         {
-            return access.getUserInfos(login);
+            return access.GetUserInfos(login);
         }
     }
 }

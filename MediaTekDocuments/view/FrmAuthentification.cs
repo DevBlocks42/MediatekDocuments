@@ -24,10 +24,10 @@ namespace MediaTekDocuments.view
         private void btnConnexion_Click(object sender, EventArgs e)
         {
             if(tbxLogin.Text.Length > 0 && tbxPwd.Text.Length > 0) {
-                Utilisateur utilisateur = controller.getUserInfos(tbxLogin.Text);
+                Utilisateur utilisateur = controller.GetUserInfos(tbxLogin.Text);
                 if(utilisateur != null) {
-                    if(utilisateur.pwd_hash != "") { 
-                        if(CryptoTools.VerifyPassword(tbxPwd.Text, utilisateur.pwd_hash)) {
+                    if(utilisateur.Pwd_hash != "") { 
+                        if(CryptoTools.VerifyPassword(tbxPwd.Text, utilisateur.Pwd_hash)) {
                             MessageBox.Show("Authentification réussie");
                             FrmMediatek frm = new FrmMediatek(utilisateur);
                             this.Hide();

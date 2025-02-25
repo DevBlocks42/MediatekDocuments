@@ -11,12 +11,12 @@ namespace MediaTekDocuments.model
     /// </summary>
     public class Abonnement : Commande
     { 
-        public DateTime dateFinAbonnement { get; set; } 
-        public string idRevue { get; set; }
+        public DateTime DateFinAbonnement { get; set; } 
+        public string IdRevue { get; set; }
         public Abonnement(string id, DateTime dateCommande, double montant, DateTime dateFinAbonnement, string idRevue) : base(id, dateCommande, montant)
         {
-            this.dateFinAbonnement = dateFinAbonnement; 
-            this.idRevue = idRevue; 
+            this.DateFinAbonnement = dateFinAbonnement; 
+            this.IdRevue = idRevue; 
         }
     }
 }

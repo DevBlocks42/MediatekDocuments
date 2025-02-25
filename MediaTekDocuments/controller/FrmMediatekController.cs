@@ -92,17 +92,17 @@ namespace MediaTekDocuments.controller
         /// </summary>
         /// <param name="idLivre"></param>
         /// <returns>List<CommandeDocument></returns>
-        public List<CommandeDocument> getCommandesLivre(string idLivre)
+        public List<CommandeDocument> GetCommandesLivre(string idLivre)
         {
-            return access.getCommandesLivre(idLivre);
+            return access.GetCommandesLivre(idLivre);
         }
-        public List<Abonnement> getAbonnementsRevue(string idRevue)
+        public List<Abonnement> GetAbonnementsRevue(string idRevue)
         {
-            return access.getAbonnementsRevue(idRevue);
+            return access.GetAbonnementsRevue(idRevue);
         }
-        public List<Abonnement> getAbonnementsExpirationProche()
+        public List<Abonnement> GetAbonnementsExpirationProche()
         {
-            return access.getAbonnementsExpirationProche();
+            return access.GetAbonnementsExpirationProche();
         }
         /// <summary>
         /// Enregistre une nouvelle commande de livre dans la base de données
@@ -111,33 +111,33 @@ namespace MediaTekDocuments.controller
         /// <param name="idLivre"></param>
         /// <param name="nbExemplaire"></param>
         /// <returns>bool</returns>
-        public bool supprimerCommande(string idCommande)
+        public bool SupprimerCommande(string idCommande)
         {
-            return access.supprimerCommande(idCommande);
+            return access.SupprimerCommande(idCommande);
         }
-        public bool supprimerAbonnement(string idAbonnement)
+        public bool SupprimerAbonnement(string idAbonnement)
         {
-            return access.supprimerAbonnement(idAbonnement);
+            return access.SupprimerAbonnement(idAbonnement);
         }
-        public bool enregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
+        public bool EnregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
         {
-            return access.enregistrerNouvelleCommande(montant, idLivre, nbExemplaire);
+            return access.EnregistrerNouvelleCommande(montant, idLivre, nbExemplaire);
         }
-        public bool modifierSuiviCommande(string idCommande, int idSuivi)
+        public bool ModifierSuiviCommande(string idCommande, int idSuivi)
         {
-            return access.modifierSuiviCommande(idCommande, idSuivi);
+            return access.ModifierSuiviCommande(idCommande, idSuivi);
         }
-        public bool enregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
+        public bool EnregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
         {
-            return access.enregistrerAbonnement(montant, idRevue, dateFinAbonnement);
+            return access.EnregistrerAbonnement(montant, idRevue, dateFinAbonnement);
         }
         /// <summary>
         /// Retourne la liste de tous les suivis possibles
         /// </summary>
         /// <returns>Liste d'objets Suivi</returns>
-        public List<Suivi> getSuivis()
+        public List<Suivi> GetSuivis()
         {
-            return access.getSuivis();
+            return access.GetSuivis();
         }
         /// <summary>
         /// Crée un exemplaire d'une revue dans la bdd

@@ -11,7 +11,7 @@ namespace MediaTekDocuments.utils
     /// <summary>
     /// Classe utilitaire concernant la cryptographie des mots de passes basée sur la Password-Based Key Derivation Function 2 (pbkdf2)
     /// </summary>
-    public class CryptoTools
+    public static class CryptoTools
     {
         /// <summary>
         /// Constante concernant la taille du salt (64 Bytes)

@@ -135,7 +135,7 @@ namespace MediaTekDocuments.dal
         /// <returns>Liste d'objets Exemplaire</returns>
         public List<Exemplaire> GetExemplairesRevue(string idDocument)
         {
-            String jsonIdDocument = convertToJson("id", idDocument);
+            String jsonIdDocument = ConvertToJson("id", idDocument);
             List<Exemplaire> lesExemplaires = TraitementRecup<Exemplaire>(GET, "exemplaire/" + jsonIdDocument, null);
             return lesExemplaires;
         }
@@ -144,23 +144,24 @@ namespace MediaTekDocuments.dal
         /// </summary>
         /// <param name="idLivre">id du livre concerné</param>
         /// <returns>Liste d'objets CommandeDocument</returns>
-        public List<CommandeDocument> getCommandesLivre(string idLivre)
+        public List<CommandeDocument> GetCommandesLivre(string idLivre)
         {
-            String jsonIdLivre = convertToJson("idLivreDvd", idLivre);
+            String jsonIdLivre = ConvertToJson("idLivreDvd", idLivre);
             List<CommandeDocument> lesCommandes = TraitementRecup<CommandeDocument>(GET, "commandes/" + jsonIdLivre, null);
             return lesCommandes;
         }
-        public List<Abonnement> getAbonnementsRevue(string idRevue)
+        public List<Abonnement> GetAbonnementsRevue(string idRevue)
         {
-            String jsonIdRevue = convertToJson("idRevue", idRevue);
+            String jsonIdRevue = ConvertToJson("idRevue", idRevue);
             try { 
                 List<Abonnement> lesAbonnements = TraitementRecup<Abonnement>(GET, "abonnements/" + jsonIdRevue, null);
                 return lesAbonnements;
             } catch(Exception e) {
+                Console.WriteLine(e.Message);
                 return null;
             }
         }
-        public List<Suivi> getSuivis()
+        public List<Suivi> GetSuivis()
         {
             List<Suivi> lesSuivis = TraitementRecup<Suivi>(GET, "suivi", null);
             return lesSuivis;
@@ -170,9 +171,9 @@ namespace MediaTekDocuments.dal
         /// </summary>
         /// <param name="idCommande">numéro de commande</param>
         /// <returns></returns>
-        public bool supprimerCommande(string idCommande)
+        public bool SupprimerCommande(string idCommande)
         {
-            Object jsonId = convertToJson("id", idCommande);    
+            Object jsonId = ConvertToJson("id", idCommande);    
             try {
                 Console.WriteLine(jsonId);
                 TraitementRecup<CommandeDocument>(DELETE, "commandedocument/" + jsonId, null);
@@ -187,22 +188,23 @@ namespace MediaTekDocuments.dal
         /// </summary>
         /// <param name="idAbonnement"></param>
         /// <returns></returns>
-        public bool supprimerAbonnement(string idAbonnement)
+        public bool SupprimerAbonnement(string idAbonnement)
         {
-            Object jsonId = convertToJson("id", idAbonnement);
+            Object jsonId = ConvertToJson("id", idAbonnement);
             try { 
                 TraitementRecup<CommandeDocument>(DELETE, "abonnement/" + jsonId, null);
                 return true;
             } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
-        public List<Abonnement> getAbonnementsExpirationProche()
+        public List<Abonnement> GetAbonnementsExpirationProche()
         {
             List<Abonnement> abos = new List<Abonnement> ();    
             DateTime maxDate = DateTime.Today;
             maxDate = maxDate.AddDays(30);
-            string jsonMaxDate = convertToJson("maxDate", maxDate.ToString("yyyy-MM-dd"));
+            string jsonMaxDate = ConvertToJson("maxDate", maxDate.ToString("yyyy-MM-dd"));
             Console.WriteLine(jsonMaxDate); 
             try { 
                 abos = TraitementRecup<Abonnement>(GET, "abonnements_30jours/" +jsonMaxDate, null);
@@ -217,14 +219,15 @@ namespace MediaTekDocuments.dal
         /// <param name="idCommande"></param>
         /// <param name="idSuivi"></param>
         /// <returns></returns>
-        public bool modifierSuiviCommande(string idCommande, int idSuivi) 
+        public bool ModifierSuiviCommande(string idCommande, int idSuivi) 
         {
-            string jsonIdSuivi = convertToJson("idSuivi", idSuivi);
+            string jsonIdSuivi = ConvertToJson("idSuivi", idSuivi);
             Console.WriteLine(jsonIdSuivi);
             try { 
                 TraitementRecup<CommandeDocument>(PUT, "commandedocument/" + idCommande, "champs=" + jsonIdSuivi);
                 return true;
             } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
                 return false;
             }
         }
@@ -235,15 +238,17 @@ namespace MediaTekDocuments.dal
         /// <param name="idLivre"></param>
         /// <param name="nbExemplaire"></param>
         /// <returns>true si l'insertion s'est bien passée, false sinon</returns>
-        public bool enregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
+        public bool EnregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
         {
+            #pragma warning disable IDE0028
             Dictionary<Object, Object> parametres = new Dictionary<Object, Object>();
+            #pragma warning restore IDE0028
             parametres.Add("dateCommande", DateTime.Now.ToString("yyyy-MM-dd"));
             parametres.Add("montant", montant);
             parametres.Add("idSuivi", 1);
             parametres.Add("idLivreDvd", idLivre);
             parametres.Add("nbExemplaire", nbExemplaire);
-            string jsonArray = convertToJsonArray(parametres);
+            string jsonArray = ConvertToJsonArray(parametres);
             try {
                 TraitementRecup<Commande>(POST, "insert_commande", "champs=" + jsonArray);
                 return true;
@@ -251,14 +256,16 @@ namespace MediaTekDocuments.dal
                 return false; 
             }
         }
-        public bool enregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
+        public bool EnregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
         {
+            #pragma warning disable IDE0028
             Dictionary<Object, Object> parametres = new Dictionary<Object, Object>();
+            #pragma warning restore IDE0028
             parametres.Add("dateCommande", DateTime.Now.ToString("yyyy-MM-dd"));
             parametres.Add("montant", montant);
-            parametres.Add("dateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd"));
-            parametres.Add("idRevue", idRevue);
-            string jsonArray = convertToJsonArray(parametres);
+            parametres.Add("DateFinAbonnement", dateFinAbonnement.ToString("yyyy-MM-dd"));
+            parametres.Add("IdRevue", idRevue);
+            string jsonArray = ConvertToJsonArray(parametres);
             try {
                 TraitementRecup<Abonnement>(POST, "insert_abonnement", "champs=" + jsonArray);
                 return true;
@@ -283,14 +290,14 @@ namespace MediaTekDocuments.dal
             }
             return false;
         }
-        public Utilisateur getUserInfos(string login)
+        public Utilisateur GetUserInfos(string login)
         {
             if(login.Length <= 0 || login == null) {
                 return null;
             }
-            List<Utilisateur> utilisateur = null;
+            List<Utilisateur> utilisateur;
             try {
-                string jsonLogin = convertToJson("login", login);
+                string jsonLogin = ConvertToJson("login", login);
                 utilisateur = TraitementRecup<Utilisateur>(GET, "utilisateur/" + jsonLogin, null);
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
@@ -346,9 +353,11 @@ namespace MediaTekDocuments.dal
         /// <param name="nom"></param>
         /// <param name="valeur"></param>
         /// <returns>couple au format json</returns>
-        private String convertToJson(Object nom, Object valeur)
+        private static String ConvertToJson(Object nom, Object valeur)
         {
+            #pragma warning disable IDE0028
             Dictionary<Object, Object> dictionary = new Dictionary<Object, Object>();
+            #pragma warning restore IDE0028
             dictionary.Add(nom, valeur);
             return JsonConvert.SerializeObject(dictionary);
         }
@@ -357,7 +366,7 @@ namespace MediaTekDocuments.dal
         /// </summary>
         /// <param name="nomsValeurs"></param>
         /// <returns></returns>
-        private String convertToJsonArray(Dictionary<Object, Object> nomsValeurs)
+        private static String ConvertToJsonArray(Dictionary<Object, Object> nomsValeurs)
         {
             Dictionary<Object, Object> dictionary = new Dictionary<Object, Object>();
             foreach (var ligne in nomsValeurs)

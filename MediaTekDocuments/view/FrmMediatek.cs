@@ -33,15 +33,15 @@ namespace MediaTekDocuments.view
             InitializeComponent();
             this.utilisateur = utilisateur;
             this.controller = new FrmMediatekController();
-            disableControlsForUser();
+            DisableControlsForUser();
             tabCommandeLivre.Enter += tabCommandeLivre_Enter;
             tabCommandeDvd.Enter += tabCommandeDvd_Enter;
             tabAbonnementRevue.Enter += tabAbonnementRevue_Enter;
             
         }
-        public void disableControlsForUser()
+        public void DisableControlsForUser()
         {
-            switch(utilisateur.id_service) {
+            switch(utilisateur.Id_service) {
                 case 1: //Service administratif
                     break;
                 case 2: //Service prêts
@@ -52,7 +52,7 @@ namespace MediaTekDocuments.view
                     tabOngletsApplication.TabPages.Remove(tabAbonnementRevue);
                     break;
                 case 3: //Service culture
-                    MessageBox.Show("Le personnel du service culture n'est pas habilité à accéder à l'application.", "Privilèges insuffisants.");
+                    MessageBox.Show("Le personnel du service culture n'est pas habilité à accéder à l'application.", "Privillèges insuffisants.");
                     Application.Exit();
                     break;
                 case 4: //Service administrateurs
@@ -66,7 +66,7 @@ namespace MediaTekDocuments.view
         /// <param name="lesCategories">liste des objets de type Genre ou Public ou Rayon</param>
         /// <param name="bdg">bindingsource contenant les informations</param>
         /// <param name="cbx">combobox à remplir</param>
-        public void RemplirComboCategorie(List<Categorie> lesCategories, BindingSource bdg, ComboBox cbx)
+        public static void RemplirComboCategorie(List<Categorie> lesCategories, BindingSource bdg, ComboBox cbx)
         {
             bdg.DataSource = lesCategories;
             cbx.DataSource = bdg;
@@ -77,7 +77,7 @@ namespace MediaTekDocuments.view
         }
         private void VerifierAbonnementsBientotExpires()
         {
-            abonnementsExpirationProche = controller.getAbonnementsExpirationProche();
+            abonnementsExpirationProche = controller.GetAbonnementsExpirationProche();
             lesRevues = controller.GetAllRevues();
             if (abonnementsExpirationProche.Count > 0) {
                 using (Form form = new Form())
@@ -100,7 +100,7 @@ namespace MediaTekDocuments.view
         }
         private void FrmMediatek_Shown(object sender, EventArgs e)
         {
-            if(utilisateur!= null &&  utilisateur.id_service == 1 || utilisateur.id_service == 4) { 
+            if(utilisateur!= null &&  utilisateur.Id_service == 1 || utilisateur.Id_service == 4) { 
                 VerifierAbonnementsBientotExpires();
             }
         }
@@ -110,12 +110,12 @@ namespace MediaTekDocuments.view
             _sender.Columns["id"].Visible = false;
             _sender.Columns["dateCommande"].Visible = false;
             _sender.Columns["montant"].Visible = false;
-            _sender.Columns["idRevue"].Visible = false;
-            _sender.Columns["dateFinAbonnement"].HeaderText = "Date d'expiration";
+            _sender.Columns["IdRevue"].Visible = false;
+            _sender.Columns["DateFinAbonnement"].HeaderText = "Date d'expiration";
             _sender.Refresh();
             for (int i = 0; i < _sender.RowCount; i++)
             {
-                _sender.Rows[i].Cells["titreRevue"].Value = lesRevues.Find(x => x.Id.Equals(abonnementsExpirationProche[i].idRevue)).Titre;
+                _sender.Rows[i].Cells["titreRevue"].Value = lesRevues.Find(x => x.Id.Equals(abonnementsExpirationProche[i].IdRevue)).Titre;
             }
         }
         #endregion
@@ -1327,8 +1327,8 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void tabCommandeLivre_Enter(object sender, EventArgs e)
         {
-            lesSuivis = controller.getSuivis();
-            lesSuivis = lesSuivis.OrderBy(suivi => suivi.id).ToList();
+            lesSuivis = controller.GetSuivis();
+            lesSuivis = lesSuivis.OrderBy(suivi => suivi.Id).ToList();
             bdgSuivis.DataSource = lesSuivis;
             cbxSuivi.DataSource = bdgSuivis;
             if(tbxNumLivre.Text.Length == 5) {
@@ -1343,8 +1343,8 @@ namespace MediaTekDocuments.view
         private void tabCommandeDvd_Enter(object sender, EventArgs e)
         {
             lesDvd = controller.GetAllDvd();
-            lesSuivis = controller.getSuivis();
-            lesSuivis = lesSuivis.OrderBy(suivi => suivi.id).ToList();
+            lesSuivis = controller.GetSuivis();
+            lesSuivis = lesSuivis.OrderBy(suivi => suivi.Id).ToList();
             bdgSuivis.DataSource = lesSuivis;
             cbxSuiviDvd.DataSource = bdgSuivis;
             if(tbxNumDvd.Text.Length == 5) { 
@@ -1434,17 +1434,17 @@ namespace MediaTekDocuments.view
             dgvCourante.Columns.Clear();
             dgvCourante.Rows.Clear();
             if (lesCommandes == null) {
-                this.lesCommandes = this.controller.getCommandesLivre(livre.Id);
+                this.lesCommandes = this.controller.GetCommandesLivre(livre.Id);
             }
             bdgCommandes.DataSource = this.lesCommandes;
             dgvCourante.DataSource = bdgCommandes;
             dgvCourante.Columns.Add("idSuivi_", "suivi");
             for (int i = 0; i < this.lesCommandes.Count; i++) {
-                dgvCourante.Rows[i].Cells["idSuivi_"].Value = lesSuivis[this.lesCommandes[i].idSuivi - 1].libelle;
+                dgvCourante.Rows[i].Cells["idSuivi_"].Value = lesSuivis[this.lesCommandes[i].IdSuivi - 1].Libelle;
             }
-            dgvCourante.Columns["idSuivi"].Visible = false;
+            dgvCourante.Columns["IdSuivi"].Visible = false;
             dgvCourante.Columns["id"].Visible = false;
-            dgvCourante.Columns["idLivreDvd"].Visible = false;
+            dgvCourante.Columns["IdLivreDvd"].Visible = false;
             tbxNumCommandeSuiviCourant.Text = string.Empty;
             tbxNumCommandeSupprCourant.Text = string.Empty;
         }
@@ -1456,8 +1456,8 @@ namespace MediaTekDocuments.view
         /// <param name="nbExemplaire">int nombre d'exemplaire à commander</param>
         private void EnregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
         {
-            if (controller.enregistrerNouvelleCommande(montant, idLivre, nbExemplaire)) {
-                reafficherCommandes();
+            if (controller.EnregistrerNouvelleCommande(montant, idLivre, nbExemplaire)) {
+                ReafficherCommandes();
             } else {
                 MessageBox.Show("Une erreur est survenue lors de l'enregistrement de la nouvelle commande.");
             }
@@ -1507,8 +1507,8 @@ namespace MediaTekDocuments.view
             List<CommandeDocument> sortedList = new List<CommandeDocument>();
             bool success = false;
             switch (titreColonne) {
-                case "nbExemplaire":
-                    sortedList = lesCommandes.OrderBy(o => o.nbExemplaire).Reverse().ToList();
+                case "NbExemplaire":
+                    sortedList = lesCommandes.OrderBy(o => o.NbExemplaire).Reverse().ToList();
                     success = true;
                     break;
                 case "dateCommande":
@@ -1520,7 +1520,7 @@ namespace MediaTekDocuments.view
                     success = true;
                     break;
                 case "suivi":
-                    sortedList = lesCommandes.OrderBy(o => o.idSuivi).ToList();
+                    sortedList = lesCommandes.OrderBy(o => o.IdSuivi).ToList();
                     success = true;
                     break;
                 default: break;
@@ -1550,14 +1550,12 @@ namespace MediaTekDocuments.view
                 tbxNumCommandeSupprCourant = tbxNumCommandeSuppr;
                 cbxSuiviCourant = cbxSuivi;
             }
-            if (dgvCourante.Focused) { //Permet de s'assurer qu'il s'agit bien de la séléction d'une ligne par l'utilisateur et non du déclenchement automatique de cet évènement après le binding des commandes.
-                if (dgvCourante.CurrentCell != null) {
-                    int index = dgvCourante.CurrentCell.RowIndex;
-                    if (index != -1 && lesCommandes != null) {
-                        tbxNumCommandeSuiviCourant.Text = lesCommandes[index].id;
-                        tbxNumCommandeSupprCourant.Text = lesCommandes[index].id;
-                        cbxSuiviCourant.SelectedIndex = lesCommandes[index].idSuivi - 1;
-                    }
+            if (dgvCourante.Focused && dgvCourante.CurrentCell != null) { //Permet de s'assurer qu'il s'agit bien de la séléction d'une ligne par l'utilisateur et non du déclenchement automatique de cet évènement après le binding des commandes.
+                int index = dgvCourante.CurrentCell.RowIndex;
+                if (index != -1 && lesCommandes != null) {
+                    tbxNumCommandeSuiviCourant.Text = lesCommandes[index].id;
+                    tbxNumCommandeSupprCourant.Text = lesCommandes[index].id;
+                    cbxSuiviCourant.SelectedIndex = lesCommandes[index].IdSuivi - 1;
                 }
             }
         }
@@ -1584,17 +1582,15 @@ namespace MediaTekDocuments.view
                 CommandeDocument laCommande = lesCommandes[index];
                 bool error = false;
                 if (laCommande != null) {
-                    if (suiviChoisi.id != laCommande.idSuivi) {
+                    if (suiviChoisi.Id != laCommande.IdSuivi) {
                         // Contrôle des règles de gestion concernant l'état des suivi
-                        if (laCommande.idSuivi == 2 || laCommande.idSuivi == 3 && (suiviChoisi.id == 1 || suiviChoisi.id == 4)) {
-                            error = true;
-                        } else if (suiviChoisi.id == 2 && laCommande.idSuivi != 3) {
+                        if (laCommande.IdSuivi == 2 || laCommande.IdSuivi == 3 && (suiviChoisi.Id == 1 || suiviChoisi.Id == 4) || (suiviChoisi.Id == 2 && laCommande.IdSuivi != 3)) {
                             error = true;
                         }
                         if (!error) {
-                            if (controller.modifierSuiviCommande(laCommande.id, suiviChoisi.id)) {
+                            if (controller.ModifierSuiviCommande(laCommande.id, suiviChoisi.Id)) {
                                 MessageBox.Show("L'état de la commande a bien été modifié.");
-                                reafficherCommandes();
+                                ReafficherCommandes();
                             }
                         } else {
                             MessageBox.Show("L'état actuel de la commande ne permet pas son changement à l'état choisi.", "Erreur de gestion");
@@ -1625,12 +1621,12 @@ namespace MediaTekDocuments.view
                 int index = dgvCourante.CurrentCell.RowIndex;
                 CommandeDocument laCommande = lesCommandes[index];
                 if (laCommande != null) {
-                    if (laCommande.idSuivi != 3) {
+                    if (laCommande.IdSuivi != 3) {
                         DialogResult result = MessageBox.Show("Êtes-vous certain de vouloir supprimer cette commande ? Cette action est irréversible.", "Attention", MessageBoxButtons.OKCancel);
                         if (result == DialogResult.OK) {
-                            if (controller.supprimerCommande(laCommande.id)) {
+                            if (controller.SupprimerCommande(laCommande.id)) {
                                 MessageBox.Show("Commande supprimée avec succès.");
-                                reafficherCommandes();
+                                ReafficherCommandes();
                             }
                         } else {
                             MessageBox.Show("La suppression a été annulée.");
@@ -1643,7 +1639,7 @@ namespace MediaTekDocuments.view
                 MessageBox.Show("Vous devez d'abord séléctionner une commande avant de la supprimer.");
             }
         }
-        private void reafficherCommandes()
+        private void ReafficherCommandes()
         {
             lesCommandes = null;
             LivreDvd leLivre = livreCourant;
@@ -1678,8 +1674,8 @@ namespace MediaTekDocuments.view
             if(tbxRechercheRevue.Text.Length == 5) {
                 revueCourante = lesRevues.Find(x => x.Id.Equals(tbxRechercheRevue.Text));
                 if(revueCourante != null) {
-                    afficherInfosRevues();
-                    afficherInfosCommandesRevue();
+                    AfficherInfosRevues();
+                    AfficherInfosCommandesRevue();
                 } else {
                     MessageBox.Show("Le numéro de revue saisit n'a pas été trouvé dans la base de données.", "Erreur de saisie");
                 }
@@ -1700,7 +1696,7 @@ namespace MediaTekDocuments.view
                         double montant = double.Parse(tbxMontantAbonnement.Text, NumberStyles.Any, new CultureInfo("en-US"));
                         string idRevue = revueCourante.Id;
                         DateTime dateFinAbonnement = dtpDateFinAbonnement.Value;
-                        if (controller.enregistrerAbonnement(montant, idRevue, dateFinAbonnement)) {
+                        if (controller.EnregistrerAbonnement(montant, idRevue, dateFinAbonnement)) {
                             MessageBox.Show("L'abonnement a bien été enregistré.");
                             btnRechercheRevue.PerformClick();
                         } else {
@@ -1726,17 +1722,17 @@ namespace MediaTekDocuments.view
             if (dgvCommandesRevues.CurrentCell != null) {
                 int index = dgvCommandesRevues.CurrentCell.RowIndex;
                 Abonnement abonnementCourant = lesAbonnements[index];
-                List<Exemplaire> exemplairesRevue = controller.GetExemplairesRevue(abonnementCourant.idRevue);
+                List<Exemplaire> exemplairesRevue = controller.GetExemplairesRevue(abonnementCourant.IdRevue);
                 bool supprAutorise = true;
                 if (exemplairesRevue != null) {
                     foreach (Exemplaire exemplaire in exemplairesRevue) {
-                        if (ParutionDansAbonnement(abonnementCourant.dateCommande, abonnementCourant.dateFinAbonnement, exemplaire.DateAchat)) {
+                        if (ParutionDansAbonnement(abonnementCourant.dateCommande, abonnementCourant.DateFinAbonnement, exemplaire.DateAchat)) {
                             supprAutorise = false;
                             break;
                         }
                     }
                     if(supprAutorise) {
-                        if (controller.supprimerAbonnement(abonnementCourant.id)) {
+                        if (controller.SupprimerAbonnement(abonnementCourant.id)) {
                             MessageBox.Show("L'abonnement a bien été supprimé.");
                             btnRechercheRevue.PerformClick();   
                         } else {
@@ -1758,8 +1754,8 @@ namespace MediaTekDocuments.view
             if(revueCourante != null && lesAbonnements != null && lesAbonnements.Count > 0 ) {
                 string titreColonne = dgvCommandesRevues.Columns[e.ColumnIndex].HeaderText;
                 switch(titreColonne) {
-                    case "dateFinAbonnement":
-                        lesAbonnements = lesAbonnements.OrderBy(o => o.dateFinAbonnement).Reverse().ToList();
+                    case "DateFinAbonnement":
+                        lesAbonnements = lesAbonnements.OrderBy(o => o.DateFinAbonnement).Reverse().ToList();
                         break;
                     case "dateCommande":
                         lesAbonnements = lesAbonnements.OrderBy(o => o.dateCommande).Reverse().ToList();
@@ -1769,7 +1765,7 @@ namespace MediaTekDocuments.view
                         break;
                     default: break;
                 }
-                afficherInfosCommandesRevue(true);
+                AfficherInfosCommandesRevue(true);
             }
         }
         /// <summary>
@@ -1779,20 +1775,17 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void dgvCommandesRevues_SelectionChanged(object sender, EventArgs e)
         {
-            if(dgvCommandesRevues.Focused) {
-                if (dgvCommandesRevues.CurrentCell != null)
-                {
-                    int index = dgvCommandesRevues.CurrentCell.RowIndex;
-                    if(index != -1) {
-                        tbxNumRevueSuppr.Text = lesAbonnements[index].id;
-                    }
+            if(dgvCommandesRevues.Focused && dgvCommandesRevues.CurrentCell != null) {
+                int index = dgvCommandesRevues.CurrentCell.RowIndex;
+                if(index != -1) {
+                    tbxNumRevueSuppr.Text = lesAbonnements[index].id;
                 }
             }
         }
         /// <summary>
         /// Affiche les informations de la revue courante
         /// </summary>
-        private void afficherInfosRevues()
+        private void AfficherInfosRevues()
         {
             tbxInfoNumRevue.Text = revueCourante.Id;
             tbxInfoTitreRevue.Text = revueCourante.Titre;
@@ -1806,17 +1799,17 @@ namespace MediaTekDocuments.view
         /// Affiche les abonnements de la revue courante
         /// </summary>
         /// <param name="sorted">True : ré-affiche la liste des abonnements triée; False : réaffiche la liste des abonnements récupérées depuis la base de données</param>
-        private void afficherInfosCommandesRevue(bool sorted=false)
+        private void AfficherInfosCommandesRevue(bool sorted=false)
         {
             if(revueCourante != null) {
                 dgvCommandesRevues.Columns.Clear();
                 dgvCommandesRevues.Rows.Clear();
                 if(!sorted) { 
-                    lesAbonnements = controller.getAbonnementsRevue(revueCourante.Id);
+                    lesAbonnements = controller.GetAbonnementsRevue(revueCourante.Id);
                 }
                 bdgAbonnement.DataSource = lesAbonnements;
                 dgvCommandesRevues.DataSource = bdgAbonnement;
-                dgvCommandesRevues.Columns["idRevue"].Visible = false;
+                dgvCommandesRevues.Columns["IdRevue"].Visible = false;
                 dgvCommandesRevues.Columns["id"].Visible = false;
             }
         }
@@ -1827,7 +1820,7 @@ namespace MediaTekDocuments.view
         /// <param name="dateFinAbonnement"></param>
         /// <param name="dateParution"></param>
         /// <returns>True|False</returns>
-        private bool ParutionDansAbonnement(DateTime dateCommande, DateTime dateFinAbonnement, DateTime dateParution)
+        private static bool ParutionDansAbonnement(DateTime dateCommande, DateTime dateFinAbonnement, DateTime dateParution)
         {
             return dateParution >= dateCommande && dateParution <= dateFinAbonnement;    
         }

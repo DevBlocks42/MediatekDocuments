@@ -11,17 +11,17 @@ namespace MediaTekDocuments.model
     /// </summary>
     public class Suivi
     {
-        public int id { get; }
-        public string libelle { get; }
+        public int Id { get; }
+        public string Libelle { get; }
 
         public Suivi(int id, string libelle)
         {
-            this.id = id;
-            this.libelle = libelle;
+            this.Id = id;
+            this.Libelle = libelle;
         }
         public override string ToString()
         {
-            return libelle;
+            return Libelle;
         }
     }
 }
