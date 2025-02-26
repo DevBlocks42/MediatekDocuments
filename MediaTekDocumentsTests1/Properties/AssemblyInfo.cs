@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("MediaTekDocumentsTests")]
+[assembly: AssemblyTitle("MediaTekDocumentsTests1")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MediaTekDocumentsTests")]
+[assembly: AssemblyProduct("MediaTekDocumentsTests1")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("c91cb2e2-a8fc-4ab9-9fa0-a0c18b112f52")]
+[assembly: Guid("39bc0edd-fe87-4299-9f0c-5e1a53aaf58b")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

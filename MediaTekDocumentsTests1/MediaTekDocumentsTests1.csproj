@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C91CB2E2-A8FC-4AB9-9FA0-A0C18B112F52}</ProjectGuid>
+    <ProjectGuid>{39BC0EDD-FE87-4299-9F0C-5E1A53AAF58B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaTekDocumentsTests</RootNamespace>
-    <AssemblyName>MediaTekDocumentsTests</AssemblyName>
+    <RootNamespace>MediaTekDocumentsTests1</RootNamespace>
+    <AssemblyName>MediaTekDocumentsTests1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,7 +50,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="model\AbonnementTests.cs" />
     <Compile Include="model\SuiviTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

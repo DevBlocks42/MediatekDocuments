@@ -9,6 +9,8 @@ using System.Configuration;
 using System.Linq;
 using System.Xml.Linq;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
+using MediaTekDocuments.utils;
 
 namespace MediaTekDocuments.dal
 {
@@ -20,7 +22,7 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// adresse de l'API
         /// </summary>
-        private static readonly string uriApi = "http://localhost/rest_mediatekdocuments/";
+        private static readonly string uriApi = ConfigurationManager.ConnectionStrings["API_URI"].ConnectionString;
         /// <summary>
         /// instance unique de la classe
         /// </summary>
@@ -44,7 +46,8 @@ namespace MediaTekDocuments.dal
         /// <summary>
         /// méthode HTTP pour update
         /// </summary>
-        private const string PUT = "PUT";   
+        private const string PUT = "PUT";
+        /// <summary>
         /// Méthode privée pour créer un singleton
         /// initialise l'accès à l'API
         /// </summary>
@@ -59,6 +62,7 @@ namespace MediaTekDocuments.dal
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                LoggingUtils.LogStringToFile(e.Message);
                 Environment.Exit(0);
             }
         }
@@ -158,6 +162,7 @@ namespace MediaTekDocuments.dal
                 return lesAbonnements;
             } catch(Exception e) {
                 Console.WriteLine(e.Message);
+                LoggingUtils.LogStringToFile(e.Message);
                 return null;
             }
         }
@@ -180,6 +185,7 @@ namespace MediaTekDocuments.dal
                 return true;
             } catch (Exception ex) {
                 Console.WriteLine(ex);
+                LoggingUtils.LogStringToFile(ex.Message);
                 return false;
             }
         }
@@ -196,6 +202,7 @@ namespace MediaTekDocuments.dal
                 return true;
             } catch(Exception ex) {
                 Console.WriteLine(ex.Message);
+                LoggingUtils.LogStringToFile(ex.Message);
                 return false;
             }
         }
@@ -209,7 +216,8 @@ namespace MediaTekDocuments.dal
             try { 
                 abos = TraitementRecup<Abonnement>(GET, "abonnements_30jours/" +jsonMaxDate, null);
             } catch(Exception ex) {
-                Console.WriteLine(ex); 
+                Console.WriteLine(ex);
+                LoggingUtils.LogStringToFile(ex.Message);
             }
             return abos;
         }
@@ -228,6 +236,7 @@ namespace MediaTekDocuments.dal
                 return true;
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
+                LoggingUtils.LogStringToFile(ex.Message);
                 return false;
             }
         }
@@ -252,7 +261,8 @@ namespace MediaTekDocuments.dal
             try {
                 TraitementRecup<Commande>(POST, "insert_commande", "champs=" + jsonArray);
                 return true;
-            } catch { 
+            } catch (Exception e){
+                LoggingUtils.LogStringToFile(e.Message);
                 return false; 
             }
         }
@@ -271,6 +281,7 @@ namespace MediaTekDocuments.dal
                 return true;
             } catch (Exception ex) { 
                 Console.WriteLine(ex.ToString());
+                LoggingUtils.LogStringToFile(ex.Message);
                 return false;
             }
         }
@@ -287,6 +298,7 @@ namespace MediaTekDocuments.dal
                 return (liste != null);
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
+                LoggingUtils.LogStringToFile(ex.Message);
             }
             return false;
         }
@@ -301,6 +313,7 @@ namespace MediaTekDocuments.dal
                 utilisateur = TraitementRecup<Utilisateur>(GET, "utilisateur/" + jsonLogin, null);
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
+                LoggingUtils.LogStringToFile(ex.Message);
                 return null;
             }
             if(utilisateur.Count > 0) { 
@@ -323,6 +336,7 @@ namespace MediaTekDocuments.dal
             List<T> liste = new List<T>();
             try
             {
+                LoggingUtils.LogStringToFile("Envoi vers l'API : " + methode + " " + message + " " + parametres);
                 JObject retour = api.RecupDistant(methode, message, parametres);
                 // extraction du code retourné
                 String code = (String)retour["code"];
@@ -339,10 +353,12 @@ namespace MediaTekDocuments.dal
                 else
                 {
                     Console.WriteLine("code erreur = " + code + " message = " + (String)retour["message"]);
+                    LoggingUtils.LogStringToFile("code erreur = " + code + " message = " + (String)retour["message"]);
                 }
             }catch(Exception e)
             {
                 Console.WriteLine("Erreur lors de l'accès à l'API : "+e.Message);
+                LoggingUtils.LogStringToFile("Erreur lors de l'accès à l'API : " + e.Message);
                 Environment.Exit(0);
             }
             return liste;
