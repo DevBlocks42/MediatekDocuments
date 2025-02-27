@@ -28,7 +28,7 @@ namespace MediaTekDocuments.view
         /// <summary>
         /// Constructeur : création du contrôleur lié à ce formulaire
         /// </summary>
-        internal FrmMediatek(Utilisateur utilisateur)
+        public FrmMediatek(Utilisateur utilisateur)
         {
             InitializeComponent();
             this.utilisateur = utilisateur;

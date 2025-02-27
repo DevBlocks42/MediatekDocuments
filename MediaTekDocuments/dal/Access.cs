@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using System.Globalization;
 using Microsoft.Extensions.Logging;
 using MediaTekDocuments.utils;
+using System.Security.Cryptography;
 
 namespace MediaTekDocuments.dal
 {
@@ -20,7 +21,7 @@ namespace MediaTekDocuments.dal
     public class Access
     {
         /// <summary>
-        /// adresse de l'API
+        /// adresse de l'API ATTENTION : Ecrire l'URI en dur dans le cas des TESTS D'INTEGRATIONS
         /// </summary>
         private static readonly string uriApi = ConfigurationManager.ConnectionStrings["API_URI"].ConnectionString;
         /// <summary>
@@ -56,6 +57,7 @@ namespace MediaTekDocuments.dal
             String authenticationString;
             try
             {
+                //ATTENTION: Ecrire les identifiants en dur dans le cas des TESTS D'INTEGRATIONS
                 authenticationString = ConfigurationManager.ConnectionStrings["access"].ConnectionString;
                 api = ApiRest.GetInstance(uriApi, authenticationString);
             }

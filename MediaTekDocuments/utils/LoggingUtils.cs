@@ -14,7 +14,7 @@ namespace MediaTekDocuments.utils
     public static class LoggingUtils
     {
         /// <summary>
-        /// Chemin vers le fichier de journalisation (Récupéré dans App.config)
+        /// Chemin vers le fichier de journalisation (Récupéré dans App.config) ATTENTION : Ecrire le chemin en dur dans le cas des TESTS D'INTEGRATIONS
         /// </summary>
         private static string logFilePath = ConfigurationManager.ConnectionStrings["log_file_location"].ConnectionString;
         /// <summary>
