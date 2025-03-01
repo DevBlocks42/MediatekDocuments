@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\MediaTekDocuments.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -151,16 +152,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="controller\FrmAuthentificationController.cs" />
+    <Compile Include="controller\NamespaceDoc.cs" />
+    <Compile Include="dal\NamespaceDoc.cs" />
     <Compile Include="manager\ApiRest.cs" />
     <Compile Include="controller\FrmMediatekController.cs" />
     <Compile Include="dal\Access.cs" />
+    <Compile Include="manager\NamespaceDoc.cs" />
     <Compile Include="model\Abonnement.cs" />
     <Compile Include="model\Commande.cs" />
     <Compile Include="model\CommandeDocument.cs" />
+    <Compile Include="model\NamespaceDoc.cs" />
     <Compile Include="model\Suivi.cs" />
     <Compile Include="model\Utilisateur.cs" />
     <Compile Include="utils\CryptoTools.cs" />
     <Compile Include="utils\LoggingUtils.cs" />
+    <Compile Include="utils\NamespaceDoc.cs" />
     <Compile Include="view\FrmAuthentification.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +192,7 @@
     <Compile Include="model\Revue.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="view\NamespaceDoc.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

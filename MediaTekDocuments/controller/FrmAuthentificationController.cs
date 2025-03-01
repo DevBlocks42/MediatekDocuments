@@ -22,7 +22,7 @@ namespace MediaTekDocuments.controller
         /// Récupère les informations de l'utilisateur
         /// </summary>
         /// <param name="login"></param>
-        /// <returns></returns>
+        /// <returns>L'utilisateur correspondant au login</returns>
         public Utilisateur GetUserInfos(string login)
         {
             return access.GetUserInfos(login);
