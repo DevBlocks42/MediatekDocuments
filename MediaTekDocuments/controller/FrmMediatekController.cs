@@ -14,7 +14,6 @@ namespace MediaTekDocuments.controller
         /// Objet d'accès aux données
         /// </summary>
         private readonly Access access;
-
         /// <summary>
         /// Récupération de l'instance unique d'accès aux données
         /// </summary>
@@ -22,7 +21,6 @@ namespace MediaTekDocuments.controller
         {
             access = Access.GetInstance();
         }
-
         /// <summary>
         /// getter sur la liste des genres
         /// </summary>
@@ -31,7 +29,6 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAllGenres();
         }
-
         /// <summary>
         /// getter sur la liste des livres
         /// </summary>
@@ -40,7 +37,6 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAllLivres();
         }
-
         /// <summary>
         /// getter sur la liste des Dvd
         /// </summary>
@@ -49,7 +45,6 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAllDvd();
         }
-
         /// <summary>
         /// getter sur la liste des revues
         /// </summary>
@@ -67,7 +62,6 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAllRayons();
         }
-
         /// <summary>
         /// getter sur les publics
         /// </summary>
@@ -76,8 +70,6 @@ namespace MediaTekDocuments.controller
         {
             return access.GetAllPublics();
         }
-
-
         /// <summary>
         /// récupère les exemplaires d'une revue
         /// </summary>
@@ -96,13 +88,40 @@ namespace MediaTekDocuments.controller
         {
             return access.GetCommandesLivre(idLivre);
         }
+        /// <summary>
+        /// Getter sur les abonnements d'une revue
+        /// </summary>
+        /// <param name="idRevue"></param>
+        /// <returns></returns>
         public List<Abonnement> GetAbonnementsRevue(string idRevue)
         {
             return access.GetAbonnementsRevue(idRevue);
         }
+        /// <summary>
+        /// Getter sur les abonnements qui expirent bientôt.
+        /// </summary>
+        /// <returns></returns>
         public List<Abonnement> GetAbonnementsExpirationProche()
         {
             return access.GetAbonnementsExpirationProche();
+        }
+        /// <summary>
+        /// Supprime une commande
+        /// </summary>
+        /// <param name="idCommande"></param>
+        /// <returns></returns>
+        public bool SupprimerCommande(string idCommande)
+        {
+            return access.SupprimerCommande(idCommande);
+        }
+        /// <summary>
+        /// Supprime un abonnement
+        /// </summary>
+        /// <param name="idAbonnement"></param>
+        /// <returns></returns>
+        public bool SupprimerAbonnement(string idAbonnement)
+        {
+            return access.SupprimerAbonnement(idAbonnement);
         }
         /// <summary>
         /// Enregistre une nouvelle commande de livre dans la base de données
@@ -111,22 +130,27 @@ namespace MediaTekDocuments.controller
         /// <param name="idLivre"></param>
         /// <param name="nbExemplaire"></param>
         /// <returns>bool</returns>
-        public bool SupprimerCommande(string idCommande)
-        {
-            return access.SupprimerCommande(idCommande);
-        }
-        public bool SupprimerAbonnement(string idAbonnement)
-        {
-            return access.SupprimerAbonnement(idAbonnement);
-        }
         public bool EnregistrerNouvelleCommande(double montant, string idLivre, int nbExemplaire)
         {
             return access.EnregistrerNouvelleCommande(montant, idLivre, nbExemplaire);
         }
+        /// <summary>
+        /// Modifier le suivi d'une commande
+        /// </summary>
+        /// <param name="idCommande"></param>
+        /// <param name="idSuivi"></param>
+        /// <returns></returns>
         public bool ModifierSuiviCommande(string idCommande, int idSuivi)
         {
             return access.ModifierSuiviCommande(idCommande, idSuivi);
         }
+        /// <summary>
+        /// Enregistre un nouvel abonnement
+        /// </summary>
+        /// <param name="montant"></param>
+        /// <param name="idRevue"></param>
+        /// <param name="dateFinAbonnement"></param>
+        /// <returns></returns>
         public bool EnregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
         {
             return access.EnregistrerAbonnement(montant, idRevue, dateFinAbonnement);

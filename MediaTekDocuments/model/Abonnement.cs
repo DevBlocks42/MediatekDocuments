@@ -13,6 +13,14 @@ namespace MediaTekDocuments.model
     { 
         public DateTime DateFinAbonnement { get; set; } 
         public string IdRevue { get; set; }
+        /// <summary>
+        /// Constructeur de l'objet
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dateCommande"></param>
+        /// <param name="montant"></param>
+        /// <param name="dateFinAbonnement"></param>
+        /// <param name="idRevue"></param>
         public Abonnement(string id, DateTime dateCommande, double montant, DateTime dateFinAbonnement, string idRevue) : base(id, dateCommande, montant)
         {
             this.DateFinAbonnement = dateFinAbonnement; 

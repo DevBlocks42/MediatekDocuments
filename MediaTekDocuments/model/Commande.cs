@@ -14,6 +14,12 @@ namespace MediaTekDocuments.model
         public string id { get; }
         public DateTime dateCommande { get; }
         public double montant { get; }
+        /// <summary>
+        /// Constructeur de l'objet
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dateCommande"></param>
+        /// <param name="montant"></param>
         public Commande(string id, DateTime dateCommande, double montant) 
         {
             this.id = id;

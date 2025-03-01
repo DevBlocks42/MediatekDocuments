@@ -49,7 +49,6 @@ namespace MediaTekDocuments.utils
             Array.Copy(salt, 0, hashBytes, 0, SALT_SIZE);
             Array.Copy(hash, 0, hashBytes, SALT_SIZE, HASH_SIZE);
             return Convert.ToBase64String(hashBytes);
-
         }
         /// <summary>
         /// Méthode de vérification d'identité entre un mot de passe en claire et un hash de référence

@@ -13,6 +13,9 @@ using MediaTekDocuments.utils;
 
 namespace MediaTekDocuments.view
 {
+    /// <summary>
+    /// Classe d'affichage de la fenêtre d'authentification
+    /// </summary>
     public partial class FrmAuthentification : Form
     {
         private readonly FrmAuthentificationController controller;
@@ -21,6 +24,11 @@ namespace MediaTekDocuments.view
             InitializeComponent();
             controller = new FrmAuthentificationController();   
         }
+        /// <summary>
+        /// Méthode événementielle associée au clic sur le bouton de connexion.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnConnexion_Click(object sender, EventArgs e)
         {
             if(tbxLogin.Text.Length > 0 && tbxPwd.Text.Length > 0) {

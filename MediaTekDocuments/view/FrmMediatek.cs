@@ -24,7 +24,6 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgRayons = new BindingSource();
         private List<Abonnement> abonnementsExpirationProche;
         private Utilisateur utilisateur = null;
-
         /// <summary>
         /// Constructeur : création du contrôleur lié à ce formulaire
         /// </summary>
@@ -37,8 +36,10 @@ namespace MediaTekDocuments.view
             tabCommandeLivre.Enter += tabCommandeLivre_Enter;
             tabCommandeDvd.Enter += tabCommandeDvd_Enter;
             tabAbonnementRevue.Enter += tabAbonnementRevue_Enter;
-            
         }
+        /// <summary>
+        /// Désactive certains Controls en fonction des privilèges de l'utilisateur courant.
+        /// </summary>
         public void DisableControlsForUser()
         {
             switch(utilisateur.Id_service) {
@@ -75,6 +76,9 @@ namespace MediaTekDocuments.view
                 cbx.SelectedIndex = -1;
             }
         }
+        /// <summary>
+        /// Affiche une sous-fenêtre contenant la liste des abonnements qui expirent dans moins de 30 jours.
+        /// </summary>
         private void VerifierAbonnementsBientotExpires()
         {
             abonnementsExpirationProche = controller.GetAbonnementsExpirationProche();
@@ -98,12 +102,22 @@ namespace MediaTekDocuments.view
                 }
             }
         }
+        /// <summary>
+        /// Méthode événementielle déclenchée à la fin du chargement de la fenêtre principale.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FrmMediatek_Shown(object sender, EventArgs e)
         {
             if(utilisateur!= null &&  utilisateur.Id_service == 1 || utilisateur.Id_service == 4) { 
                 VerifierAbonnementsBientotExpires();
             }
         }
+        /// <summary>
+        /// Méthode événementielle appelée lorsque le Binding de données sur la DataGridView est terminé.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dgvAboExpires_DataBindingComplete(object sender, EventArgs e)
         {
             DataGridView _sender = sender as DataGridView;
@@ -123,7 +137,6 @@ namespace MediaTekDocuments.view
         #region Onglet Livres
         private readonly BindingSource bdgLivresListe = new BindingSource();
         private List<Livre> lesLivres = new List<Livre>();
-
         /// <summary>
         /// Ouverture de l'onglet Livres : 
         /// appel des méthodes pour remplir le datagrid des livres et des combos (genre, rayon, public)
@@ -156,7 +169,6 @@ namespace MediaTekDocuments.view
             dgvLivresListe.Columns["id"].DisplayIndex = 0;
             dgvLivresListe.Columns["titre"].DisplayIndex = 1;
         }
-
         /// <summary>
         /// Recherche et affichage du livre dont on a saisi le numéro.
         /// Si non trouvé, affichage d'un MessageBox.
@@ -188,7 +200,6 @@ namespace MediaTekDocuments.view
                 RemplirLivresListeComplete();
             }
         }
-
         /// <summary>
         /// Recherche et affichage des livres dont le titre matche acec la saisie.
         /// Cette procédure est exécutée à chaque ajout ou suppression de caractère
@@ -218,7 +229,6 @@ namespace MediaTekDocuments.view
                 }
             }
         }
-
         /// <summary>
         /// Affichage des informations du livre sélectionné
         /// </summary>
@@ -244,7 +254,6 @@ namespace MediaTekDocuments.view
                 pcbLivresImage.Image = null;
             }
         }
-
         /// <summary>
         /// Vide les zones d'affichage des informations du livre
         /// </summary>
@@ -261,7 +270,6 @@ namespace MediaTekDocuments.view
             txbLivresTitre.Text = "";
             pcbLivresImage.Image = null;
         }
-
         /// <summary>
         /// Filtre sur le genre
         /// </summary>
@@ -280,7 +288,6 @@ namespace MediaTekDocuments.view
                 cbxLivresPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur la catégorie de public
         /// </summary>
@@ -299,7 +306,6 @@ namespace MediaTekDocuments.view
                 cbxLivresGenres.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur le rayon
         /// </summary>
@@ -318,7 +324,6 @@ namespace MediaTekDocuments.view
                 cbxLivresPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
         /// affichage des informations du livre
@@ -344,7 +349,6 @@ namespace MediaTekDocuments.view
                 VideLivresInfos();
             }
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des livres
         /// </summary>
@@ -354,7 +358,6 @@ namespace MediaTekDocuments.view
         {
             RemplirLivresListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des livres
         /// </summary>
@@ -364,7 +367,6 @@ namespace MediaTekDocuments.view
         {
             RemplirLivresListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des livres
         /// </summary>
@@ -374,7 +376,6 @@ namespace MediaTekDocuments.view
         {
             RemplirLivresListeComplete();
         }
-
         /// <summary>
         /// Affichage de la liste complète des livres
         /// et annulation de toutes les recherches et filtres
@@ -384,7 +385,6 @@ namespace MediaTekDocuments.view
             RemplirLivresListe(lesLivres);
             VideLivresZones();
         }
-
         /// <summary>
         /// vide les zones de recherche et de filtre
         /// </summary>
@@ -396,7 +396,6 @@ namespace MediaTekDocuments.view
             txbLivresNumRecherche.Text = "";
             txbLivresTitreRecherche.Text = "";
         }
-
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -438,7 +437,6 @@ namespace MediaTekDocuments.view
         #region Onglet Dvd
         private readonly BindingSource bdgDvdListe = new BindingSource();
         private List<Dvd> lesDvd = new List<Dvd>();
-
         /// <summary>
         /// Ouverture de l'onglet Dvds : 
         /// appel des méthodes pour remplir le datagrid des dvd et des combos (genre, rayon, public)
@@ -453,7 +451,6 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxDvdRayons);
             RemplirDvdListeComplete();
         }
-
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
         /// </summary>
@@ -471,7 +468,6 @@ namespace MediaTekDocuments.view
             dgvDvdListe.Columns["id"].DisplayIndex = 0;
             dgvDvdListe.Columns["titre"].DisplayIndex = 1;
         }
-
         /// <summary>
         /// Recherche et affichage du Dvd dont on a saisi le numéro.
         /// Si non trouvé, affichage d'un MessageBox.
@@ -503,7 +499,6 @@ namespace MediaTekDocuments.view
                 RemplirDvdListeComplete();
             }
         }
-
         /// <summary>
         /// Recherche et affichage des Dvd dont le titre matche acec la saisie.
         /// Cette procédure est exécutée à chaque ajout ou suppression de caractère
@@ -533,7 +528,6 @@ namespace MediaTekDocuments.view
                 }
             }
         }
-
         /// <summary>
         /// Affichage des informations du dvd sélectionné
         /// </summary>
@@ -559,7 +553,6 @@ namespace MediaTekDocuments.view
                 pcbDvdImage.Image = null;
             }
         }
-
         /// <summary>
         /// Vide les zones d'affichage des informations du dvd
         /// </summary>
@@ -576,7 +569,6 @@ namespace MediaTekDocuments.view
             txbDvdTitre.Text = "";
             pcbDvdImage.Image = null;
         }
-
         /// <summary>
         /// Filtre sur le genre
         /// </summary>
@@ -595,7 +587,6 @@ namespace MediaTekDocuments.view
                 cbxDvdPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur la catégorie de public
         /// </summary>
@@ -614,7 +605,6 @@ namespace MediaTekDocuments.view
                 cbxDvdGenres.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur le rayon
         /// </summary>
@@ -633,7 +623,6 @@ namespace MediaTekDocuments.view
                 cbxDvdPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
         /// affichage des informations du dvd
@@ -659,7 +648,6 @@ namespace MediaTekDocuments.view
                 VideDvdInfos();
             }
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
         /// </summary>
@@ -669,7 +657,6 @@ namespace MediaTekDocuments.view
         {
             RemplirDvdListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
         /// </summary>
@@ -679,7 +666,6 @@ namespace MediaTekDocuments.view
         {
             RemplirDvdListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des Dvd
         /// </summary>
@@ -689,7 +675,6 @@ namespace MediaTekDocuments.view
         {
             RemplirDvdListeComplete();
         }
-
         /// <summary>
         /// Affichage de la liste complète des Dvd
         /// et annulation de toutes les recherches et filtres
@@ -699,7 +684,6 @@ namespace MediaTekDocuments.view
             RemplirDvdListe(lesDvd);
             VideDvdZones();
         }
-
         /// <summary>
         /// vide les zones de recherche et de filtre
         /// </summary>
@@ -711,7 +695,6 @@ namespace MediaTekDocuments.view
             txbDvdNumRecherche.Text = "";
             txbDvdTitreRecherche.Text = "";
         }
-
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -753,7 +736,6 @@ namespace MediaTekDocuments.view
         #region Onglet Revues
         private readonly BindingSource bdgRevuesListe = new BindingSource();
         private List<Revue> lesRevues = new List<Revue>();
-
         /// <summary>
         /// Ouverture de l'onglet Revues : 
         /// appel des méthodes pour remplir le datagrid des revues et des combos (genre, rayon, public)
@@ -768,7 +750,6 @@ namespace MediaTekDocuments.view
             RemplirComboCategorie(controller.GetAllRayons(), bdgRayons, cbxRevuesRayons);
             RemplirRevuesListeComplete();
         }
-
         /// <summary>
         /// Remplit le dategrid avec la liste reçue en paramètre
         /// </summary>
@@ -785,7 +766,6 @@ namespace MediaTekDocuments.view
             dgvRevuesListe.Columns["id"].DisplayIndex = 0;
             dgvRevuesListe.Columns["titre"].DisplayIndex = 1;
         }
-
         /// <summary>
         /// Recherche et affichage de la revue dont on a saisi le numéro.
         /// Si non trouvé, affichage d'un MessageBox.
@@ -817,7 +797,6 @@ namespace MediaTekDocuments.view
                 RemplirRevuesListeComplete();
             }
         }
-
         /// <summary>
         /// Recherche et affichage des revues dont le titre matche acec la saisie.
         /// Cette procédure est exécutée à chaque ajout ou suppression de caractère
@@ -847,7 +826,6 @@ namespace MediaTekDocuments.view
                 }
             }
         }
-
         /// <summary>
         /// Affichage des informations de la revue sélectionné
         /// </summary>
@@ -872,7 +850,6 @@ namespace MediaTekDocuments.view
                 pcbRevuesImage.Image = null;
             }
         }
-
         /// <summary>
         /// Vide les zones d'affichage des informations de la reuve
         /// </summary>
@@ -888,7 +865,6 @@ namespace MediaTekDocuments.view
             txbRevuesTitre.Text = "";
             pcbRevuesImage.Image = null;
         }
-
         /// <summary>
         /// Filtre sur le genre
         /// </summary>
@@ -907,7 +883,6 @@ namespace MediaTekDocuments.view
                 cbxRevuesPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur la catégorie de public
         /// </summary>
@@ -926,7 +901,6 @@ namespace MediaTekDocuments.view
                 cbxRevuesGenres.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Filtre sur le rayon
         /// </summary>
@@ -945,7 +919,6 @@ namespace MediaTekDocuments.view
                 cbxRevuesPublics.SelectedIndex = -1;
             }
         }
-
         /// <summary>
         /// Sur la sélection d'une ligne ou cellule dans le grid
         /// affichage des informations de la revue
@@ -971,7 +944,6 @@ namespace MediaTekDocuments.view
                 VideRevuesInfos();
             }
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des revues
         /// </summary>
@@ -981,7 +953,6 @@ namespace MediaTekDocuments.view
         {
             RemplirRevuesListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des revues
         /// </summary>
@@ -991,7 +962,6 @@ namespace MediaTekDocuments.view
         {
             RemplirRevuesListeComplete();
         }
-
         /// <summary>
         /// Sur le clic du bouton d'annulation, affichage de la liste complète des revues
         /// </summary>
@@ -1001,7 +971,6 @@ namespace MediaTekDocuments.view
         {
             RemplirRevuesListeComplete();
         }
-
         /// <summary>
         /// Affichage de la liste complète des revues
         /// et annulation de toutes les recherches et filtres
@@ -1011,7 +980,6 @@ namespace MediaTekDocuments.view
             RemplirRevuesListe(lesRevues);
             VideRevuesZones();
         }
-
         /// <summary>
         /// vide les zones de recherche et de filtre
         /// </summary>
@@ -1023,7 +991,6 @@ namespace MediaTekDocuments.view
             txbRevuesNumRecherche.Text = "";
             txbRevuesTitreRecherche.Text = "";
         }
-
         /// <summary>
         /// Tri sur les colonnes
         /// </summary>
@@ -1066,7 +1033,6 @@ namespace MediaTekDocuments.view
         private readonly BindingSource bdgExemplairesListe = new BindingSource();
         private List<Exemplaire> lesExemplaires = new List<Exemplaire>();
         const string ETATNEUF = "00001";
-
         /// <summary>
         /// Ouverture de l'onglet : récupère le revues et vide tous les champs.
         /// </summary>
@@ -1077,7 +1043,6 @@ namespace MediaTekDocuments.view
             lesRevues = controller.GetAllRevues();
             txbReceptionRevueNumero.Text = "";
         }
-
         /// <summary>
         /// Remplit le dategrid des exemplaires avec la liste reçue en paramètre
         /// </summary>
@@ -1099,7 +1064,6 @@ namespace MediaTekDocuments.view
                 bdgExemplairesListe.DataSource = null;
             }
         }
-
         /// <summary>
         /// Recherche d'un numéro de revue et affiche ses informations
         /// </summary>
@@ -1120,7 +1084,6 @@ namespace MediaTekDocuments.view
                 }
             }
         }
-
         /// <summary>
         /// Si le numéro de revue est modifié, la zone de l'exemplaire est vidée et inactive
         /// les informations de la revue son aussi effacées
@@ -1140,7 +1103,6 @@ namespace MediaTekDocuments.view
             RemplirReceptionExemplairesListe(null);
             AccesReceptionExemplaireGroupBox(false);
         }
-
         /// <summary>
         /// Affichage des informations de la revue sélectionnée et les exemplaires
         /// </summary>
@@ -1168,7 +1130,6 @@ namespace MediaTekDocuments.view
             // affiche la liste des exemplaires de la revue
             AfficheReceptionExemplairesRevue();
         }
-
         /// <summary>
         /// Récupère et affiche les exemplaires d'une revue
         /// </summary>
@@ -1179,7 +1140,6 @@ namespace MediaTekDocuments.view
             RemplirReceptionExemplairesListe(lesExemplaires);
             AccesReceptionExemplaireGroupBox(true);
         }
-
         /// <summary>
         /// Permet ou interdit l'accès à la gestion de la réception d'un exemplaire
         /// et vide les objets graphiques
@@ -1193,7 +1153,6 @@ namespace MediaTekDocuments.view
             pcbReceptionExemplaireImage.Image = null;
             dtpReceptionExemplaireDate.Value = DateTime.Now;
         }
-
         /// <summary>
         /// Recherche image sur disque (pour l'exemplaire à insérer)
         /// </summary>
@@ -1222,7 +1181,6 @@ namespace MediaTekDocuments.view
                 pcbReceptionExemplaireImage.Image = null;
             }
         }
-
         /// <summary>
         /// Enregistrement du nouvel exemplaire
         /// </summary>
@@ -1261,7 +1219,6 @@ namespace MediaTekDocuments.view
                 MessageBox.Show("numéro de parution obligatoire", "Information");
             }
         }
-
         /// <summary>
         /// Tri sur une colonne
         /// </summary>
@@ -1285,7 +1242,6 @@ namespace MediaTekDocuments.view
             }
             RemplirReceptionExemplairesListe(sortedList);
         }
-
         /// <summary>
         /// affichage de l'image de l'exemplaire suite à la sélection d'un exemplaire dans la liste
         /// </summary>
@@ -1358,20 +1314,17 @@ namespace MediaTekDocuments.view
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("PERFORM CLICK");
             lesCommandes = null;
             livreCourant = null;
             LivreDvd livreDvd = null;
             Button _sender = sender as Button;
             if (_sender.Name == "btnRechercheDvd") { //Cas du dvd
-                Console.WriteLine("PERFORM CLICK DVD");
                 if (tbxNumDvd.Text.Length != 5) {
                     MessageBox.Show("Erreur, l'identifiant saisit ne respecte pas le format (5 chiffres obligatoires).");
                     return;
                 }
                 livreDvd = lesDvd.Find(x => x.Id.Equals(tbxNumDvd.Text)) as LivreDvd;
             } else { //Cas du livre
-                Console.WriteLine("PERFORM CLICK LIVRE");
                 if (tbxNumLivre.Text.Length != 5) { 
                     MessageBox.Show("Erreur, l'identifiant saisit ne respecte pas le format (5 chiffres obligatoires).");
                     return;
@@ -1639,6 +1592,9 @@ namespace MediaTekDocuments.view
                 MessageBox.Show("Vous devez d'abord séléctionner une commande avant de la supprimer.");
             }
         }
+        /// <summary>
+        /// Réaffiche la les commandes du LivreDvd courant.
+        /// </summary>
         private void ReafficherCommandes()
         {
             lesCommandes = null;

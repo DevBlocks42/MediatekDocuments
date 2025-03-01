@@ -156,6 +156,11 @@ namespace MediaTekDocuments.dal
             List<CommandeDocument> lesCommandes = TraitementRecup<CommandeDocument>(GET, "commandes/" + jsonIdLivre, null);
             return lesCommandes;
         }
+        /// <summary>
+        /// Retourne la liste des abonnements à une revue
+        /// </summary>
+        /// <param name="idRevue"></param>
+        /// <returns></returns>
         public List<Abonnement> GetAbonnementsRevue(string idRevue)
         {
             String jsonIdRevue = ConvertToJson("idRevue", idRevue);
@@ -168,6 +173,10 @@ namespace MediaTekDocuments.dal
                 return null;
             }
         }
+        /// <summary>
+        /// Retourne la liste des suivis
+        /// </summary>
+        /// <returns></returns>
         public List<Suivi> GetSuivis()
         {
             List<Suivi> lesSuivis = TraitementRecup<Suivi>(GET, "suivi", null);
@@ -208,6 +217,10 @@ namespace MediaTekDocuments.dal
                 return false;
             }
         }
+        /// <summary>
+        /// Récupère la liste des abonnements qui expirent dans au plus 30 jours.
+        /// </summary>
+        /// <returns></returns>
         public List<Abonnement> GetAbonnementsExpirationProche()
         {
             List<Abonnement> abos = new List<Abonnement> ();    
@@ -268,6 +281,13 @@ namespace MediaTekDocuments.dal
                 return false; 
             }
         }
+        /// <summary>
+        /// Enregistre un nouvel abonnement dans la base de données
+        /// </summary>
+        /// <param name="montant"></param>
+        /// <param name="idRevue"></param>
+        /// <param name="dateFinAbonnement"></param>
+        /// <returns></returns>
         public bool EnregistrerAbonnement(double montant, string idRevue, DateTime dateFinAbonnement)
         {
             #pragma warning disable IDE0028
@@ -304,6 +324,11 @@ namespace MediaTekDocuments.dal
             }
             return false;
         }
+        /// <summary>
+        /// Retourne l'Utilisateur via son login 
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
         public Utilisateur GetUserInfos(string login)
         {
             if(login.Length <= 0 || login == null) {

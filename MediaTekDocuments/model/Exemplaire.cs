@@ -12,7 +12,14 @@ namespace MediaTekDocuments.model
         public DateTime DateAchat { get; set; }
         public string IdEtat { get; set; }
         public string Id { get; set; }
-
+        /// <summary>
+        /// Constructeur de l'objet
+        /// </summary>
+        /// <param name="numero"></param>
+        /// <param name="dateAchat"></param>
+        /// <param name="photo"></param>
+        /// <param name="idEtat"></param>
+        /// <param name="idDocument"></param>
         public Exemplaire(int numero, DateTime dateAchat, string photo, string idEtat, string idDocument)
         {
             this.Numero = numero;
