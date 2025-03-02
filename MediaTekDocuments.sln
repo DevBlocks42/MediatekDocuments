@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaTekIntegrationTests", 
 		{C91CB2E2-A8FC-4AB9-9FA0-A0C18B112F52} = {C91CB2E2-A8FC-4AB9-9FA0-A0C18B112F52}
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupMediaTekDocuments", "SetupMediaTekDocuments\SetupMediaTekDocuments.vdproj", "{D2994610-98E8-4942-8643-5515722F3FF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,12 @@ Global
 		{FC65C8F2-438E-4A48-9C70-AF73B072A647}.Release|x64.Build.0 = Release|Any CPU
 		{FC65C8F2-438E-4A48-9C70-AF73B072A647}.Release|x86.ActiveCfg = Release|Any CPU
 		{FC65C8F2-438E-4A48-9C70-AF73B072A647}.Release|x86.Build.0 = Release|Any CPU
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Debug|Any CPU.ActiveCfg = Debug
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Debug|x64.ActiveCfg = Debug
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Debug|x86.ActiveCfg = Debug
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Release|Any CPU.ActiveCfg = Release
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Release|x64.ActiveCfg = Release
+		{D2994610-98E8-4942-8643-5515722F3FF0}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
