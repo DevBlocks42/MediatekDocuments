@@ -11,8 +11,8 @@ Dans le cas contraire, le fichier logs pourrait ne pas être modifiable par le p
 ## Sources
 Importer le dépôt dans visual studio.
 Installer les dépendances requises : newtonsoft.json (NuGet).
-Editer le fichier de configuration "App.config" afin de spécifier les bonnes informations de connexion à l'API : 
-  - Copier la configuration générée par l'installateur
+Editer le fichier de configuration "App.config" afin de spécifier les bonnes informations de connexion à l'API soit en : 
+  - Copiant la configuration générée par l'installateur pour se connecter à l'API distante hébergée sur internet et accessible à l'URL suivante : http://mediatek-documents.atwebpages.com/rest_mediatekdocuments/
   - Spécifier ses propres identifiants de connexion à l'API en cas de test local.
 
 # Gestion des commandes de livres ou dvd 
