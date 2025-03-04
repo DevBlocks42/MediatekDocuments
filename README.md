@@ -37,6 +37,13 @@ Editer le fichier de configuration "App.config" afin de spécifier les bonnes in
 
 Le guide d'installation de l'API se trouve sur le README du dépôt de projet : https://github.com/DevBlocks42/REST_MediatekDocuments
 
+# Authentification de l'utilisateur
+
+L'application nécéssite une authentification permettant d'identifier l'utilisateur qui se connecte ainsi que son service de rattachement. 
+
+![Auth](https://github.com/user-attachments/assets/bfe3ebd8-f64c-4f58-a867-8ee568bde54d)
+
+
 # Gestion des commandes de livres ou dvd 
 
 # Gestion des abonnements de revues
