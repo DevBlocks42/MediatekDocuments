@@ -7,7 +7,7 @@ Cette application C# permet la gestion des documents, livres, dvd, revues et des
 Lien du dépôt original concernant le projet : https://github.com/CNED-SLAM/MediaTekDocuments
 
 
-# Installation
+# Installation du client
 
 ## Installateur 
 Pour installer l'application, télécharger les binaires d'installation dans le dossier "Installateur_MSI_EXE"
@@ -32,6 +32,10 @@ Editer le fichier de configuration "App.config" afin de spécifier les bonnes in
   - Copiant la configuration générée par l'installateur pour se connecter à l'API distante hébergée sur internet et accessible à l'URL suivante : http://mediatek-documents.atwebpages.com/rest_mediatekdocuments/
 
   - Spécifiant ses propres identifiants de connexion à l'API en cas de test local.
+
+# Installation de l'API 
+
+Le guide d'installation de l'API se trouve sur le README du dépôt de projet : https://github.com/DevBlocks42/REST_MediatekDocuments
 
 # Gestion des commandes de livres ou dvd 
 
