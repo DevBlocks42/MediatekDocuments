@@ -52,6 +52,9 @@ On peut enregistrer une nouvelle commande, modifier l'état de suivi ou supprime
 
 ![Commandes_Livres](https://github.com/user-attachments/assets/a24b9b8f-92d4-4d1e-94c5-b4b753a2853f)
 
+![Commandes_Dvd](https://github.com/user-attachments/assets/f738facd-2413-4f46-be94-432795830bfc)
+
+
 
 # Gestion des abonnements de revues
 
