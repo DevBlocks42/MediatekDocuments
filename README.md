@@ -55,7 +55,9 @@ On peut enregistrer une nouvelle commande, modifier l'état de suivi ou supprime
 ![Commandes_Dvd](https://github.com/user-attachments/assets/f738facd-2413-4f46-be94-432795830bfc)
 
 
-
 # Gestion des abonnements de revues
 
-# Authentification des utilisateurs 
+Le gestionnaire d'abonnement est quasiment identique aux onglets précédents sauf qu'il ne contient pas d'information concernant le suivi.
+
+![Abonnements](https://github.com/user-attachments/assets/3af6b329-8759-44c6-a3d7-3a1d1c70d53e)
+
