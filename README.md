@@ -31,7 +31,7 @@ Editer le fichier de configuration "App.config" afin de spécifier les bonnes in
 
   - Copiant la configuration générée par l'installateur pour se connecter à l'API distante hébergée sur internet et accessible à l'URL suivante : http://mediatek-documents.atwebpages.com/rest_mediatekdocuments/
 
-  - Spécifieant ses propres identifiants de connexion à l'API en cas de test local.
+  - Spécifiant ses propres identifiants de connexion à l'API en cas de test local.
 
 # Gestion des commandes de livres ou dvd 
 
