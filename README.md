@@ -46,6 +46,13 @@ L'application nécéssite une authentification permettant d'identifier l'utilisa
 
 # Gestion des commandes de livres ou dvd 
 
+Deux onglets permettent de gérer les commandes respectives des livres et des dvd.
+
+On peut enregistrer une nouvelle commande, modifier l'état de suivi ou supprimer une commande existante.
+
+![Commandes_Livres](https://github.com/user-attachments/assets/a24b9b8f-92d4-4d1e-94c5-b4b753a2853f)
+
+
 # Gestion des abonnements de revues
 
 # Authentification des utilisateurs 
