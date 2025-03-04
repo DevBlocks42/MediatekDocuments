@@ -11,11 +11,16 @@ Lien du dépôt original concernant le projet : https://github.com/CNED-SLAM/Med
 
 ## Installateur 
 Pour installer l'application, télécharger les binaires d'installation dans le dossier "Installateur_MSI_EXE"
+
 Lancer le fichier MSI.
+
 Suivez les étapes classiques d'installation.
+
 Lancez l'application installée.
+
 Note : veillez à choisir un répertoire en racine du disque (comme spécifié par défaut dans l'installateur) Exemple : C:\MediaTek\...
 Dans le cas contraire, le fichier logs pourrait ne pas être modifiable par le programme et générer une exception lors de l'exécution.
+Si vous souhaitez tout de même installer l'application dans Program Files (x86) vous devrez ajouter les droits en écriture du groupe Utilisateurs sur le fichier logs.txt.
 
 ## Sources
 Importer le dépôt dans visual studio.
