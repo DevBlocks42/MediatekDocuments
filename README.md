@@ -3,7 +3,7 @@
 ![MediaTek_Logo](https://github.com/user-attachments/assets/3a034b62-2087-406d-a5d2-8a42d5bb3457)
 
 
-Cette application C# permet la gestion des documents, livres, dvd, revues et des abonnements d'une médiathèque. Elle repose sur une API écrite en PHP pour le dialogue avec la base de données.
+Cette application C# permet la gestion des documents, livres, dvd, revues, des commandes et abonnements d'une médiathèque. Elle repose sur une API écrite en PHP pour le dialogue avec la base de données.
 Lien du dépôt original concernant le projet : https://github.com/CNED-SLAM/MediaTekDocuments
 
 
